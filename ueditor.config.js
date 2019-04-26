@@ -129,6 +129,7 @@
         "|",
         "print",
         "preview",
+        "fillblank",
         "searchreplace",
         "drafts",
         "help"

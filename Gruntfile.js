@@ -6,6 +6,7 @@ module.exports = function(grunt) {
       jsBasePath: "_src/",
       parseBasePath: "_parse/",
       cssBasePath: "themes/default/_css/",
+      cssGrayPath: "themes/gray/_css/",
 
       fetchScripts: function(readFile, basePath) {
         var sources = fs.readFileSync(readFile);
@@ -23,6 +24,19 @@ module.exports = function(grunt) {
 
       fetchStyles: function() {
         var sources = fs.readFileSync(this.cssBasePath + "ueditor.css"),
+          filepath = null,
+          pattern = /@import\s+([^;]+)*;/g,
+          src = [];
+
+        while ((filepath = pattern.exec(sources))) {
+          src.push(this.cssBasePath + filepath[1].replace(/'|"/g, ""));
+        }
+
+        return src;
+      },
+      
+      fetchGrayStyles: function(){
+        var sources = fs.readFileSync(this.cssGrayPath + "ueditor.css"),
           filepath = null,
           pattern = /@import\s+([^;]+)*;/g,
           src = [];
@@ -91,18 +105,30 @@ module.exports = function(grunt) {
       css: {
         src: Util.fetchStyles(),
         dest: disDir + "themes/default/css/ueditor.css"
+      },
+      cssgray: {
+        src: Util.fetchGrayStyles(),
+        dest: disDir + "themes/gray/css/ueditor.css"
       }
     },
     cssmin: {
-      options: {
-        banner: banner
-      },
-      files: {
-        expand: true,
-        cwd: disDir + "themes/default/css/",
-        src: ["*.css", "!*.min.css"],
-        dest: disDir + "themes/default/css/",
-        ext: ".min.css"
+      target: {
+        files: [
+          {
+            expand: true,
+            cwd: disDir + "themes/default/css/",
+            src: ["*.css", "!*.min.css"],
+            dest: disDir + "themes/default/css/",
+            ext: ".min.css"
+          },
+          {
+            expand: true,
+            cwd: disDir + "themes/gray/css/",
+            src: ["*.css", "!*.min.css"],
+            dest: disDir + "themes/gray/css/",
+            ext: ".min.css"
+          }
+        ]
       }
     },
     uglify: {
@@ -138,6 +164,7 @@ module.exports = function(grunt) {
               "themes/iframe.css",
               "themes/default/dialogbase.css",
               "themes/default/images/**",
+              "themes/gray/images/**",
               "dialogs/**",
               "lang/**",
               "third-party/**"
@@ -243,6 +270,21 @@ module.exports = function(grunt) {
           disDir + "**/.git"
         ]
       }
+    },
+    connect: {
+      server: {
+        options: {
+          port: 8000,
+          protocol: 'http',
+          hostname:'0.0.0.0',
+          keepalive: true,
+          livereload: true,
+          debug: false,
+          open: {
+            target: 'http://0.0.0.0:8000/_examples/'
+          }
+        }
+      }
     }
   });
 
@@ -253,6 +295,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-transcoding");
   grunt.loadNpmTasks("grunt-contrib-clean");
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   grunt.registerTask("default", "UEditor build", function() {
     var tasks = [

@@ -79,6 +79,7 @@
     "removeformat",
     "time",
     "date",
+    "fillblank",
     "unlink",
     "insertparagraphbeforetable",
     "insertrow",

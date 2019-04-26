@@ -44,6 +44,7 @@
             'plugins/directionality.js',
             'plugins/horizontal.js',
             'plugins/time.js',
+            'plugins/addfillblank.js',
             'plugins/rowspacing.js',
             'plugins/lineheight.js',
             'plugins/insertcode.js',
