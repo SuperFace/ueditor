@@ -154,10 +154,14 @@ UE.plugins["undo"] = function() {
         content: cont
       };
     };
+    //safari浏览器下，中文输入法，第一次输入字符过程中不会触发由于keydown晚于compositionstart后触发，所以中文输入过程中save(true)不会触发,
+    //导致中文输入结束后触发两个save，一次：save（true），一次：save(false, true)，
+    //而且两个输入内容相同，导致第二次save，this.list数组中两项目内容相同，进一步不会触发contentchange、undo
     this.save = function(notCompareRange, notSetCursor) {
       clearTimeout(saveSceneTimer);
       var currentScene = this.getScene(notSetCursor),
         lastScene = this.list[this.index];
+        console.log(lastScene, currentScene);
       if (lastScene && (lastScene.content != currentScene.content || (this.index ==0 && !/^<p><br\/><\/p>$/.test(lastScene.content)))) {
         me.trigger("contentchange");
       }
@@ -271,6 +275,7 @@ UE.plugins["undo"] = function() {
     //   !evt.shiftKey &&
     //   !evt.altKey
     // ) {
+      console.log(inputType);
       if (inputType){
         return;
       }
