@@ -158,14 +158,14 @@ UE.plugins["undo"] = function() {
       clearTimeout(saveSceneTimer);
       var currentScene = this.getScene(notSetCursor),
         lastScene = this.list[this.index];
-
-      if (lastScene && lastScene.content != currentScene.content) {
+      if (lastScene && (lastScene.content != currentScene.content || (this.index ==0 && !/^<p><br\/><\/p>$/.test(lastScene.content)))) {
         me.trigger("contentchange");
       }
       //内容相同位置相同不存
       if (
         lastScene &&
-        lastScene.content == currentScene.content &&
+        lastScene.content == currentScene.content && !(this.index == 0 && !/^<p><br\/><\/p>$/.test(lastScene.content) && lastScene.content == currentScene.content )
+        &&
         (notCompareRange
           ? 1
           : compareRangeAddress(lastScene.address, currentScene.address))
@@ -238,10 +238,10 @@ UE.plugins["undo"] = function() {
     /*Shift*/ 16: 1,
     /*Ctrl*/ 17: 1,
     /*Alt*/ 18: 1,
-    37: 1,
-    38: 1,
-    39: 1,
-    40: 1
+    /*Left*/ 37: 1,
+    /*Up*/ 38: 1,
+    /*Right*/ 39: 1,
+    /*Down*/ 40: 1
   },
     keycont = 0,
     lastKeyCode;
@@ -264,16 +264,17 @@ UE.plugins["undo"] = function() {
   me.addListener("keydown", function(type, evt) {
     var me = this;
     var keyCode = evt.keyCode || evt.which;
-    if (
-      !keys[keyCode] &&
-      !evt.ctrlKey &&
-      !evt.metaKey &&
-      !evt.shiftKey &&
-      !evt.altKey
-    ) {
-      if (inputType) return;
-
-      if (!me.selection.getRange().collapsed) {
+    // if (
+    //   !keys[keyCode] &&
+    //   !evt.ctrlKey &&
+    //   !evt.metaKey &&
+    //   !evt.shiftKey &&
+    //   !evt.altKey
+    // ) {
+      if (inputType){
+        return;
+      }
+      if (!me.selection.getRange().collapsed) {//返回 true 表示Range 的起始位置和结束位置重合, false 表示不重合
         me.undoManger.save(false, true);
         isCollapsed = false;
         return;
@@ -304,23 +305,23 @@ UE.plugins["undo"] = function() {
       if (keycont >= maxInputCount) {
         save(me);
       }
-    }
+    //}
   });
   me.addListener("keyup", function(type, evt) {
     var keyCode = evt.keyCode || evt.which;
-    if (
-      !keys[keyCode] &&
-      !evt.ctrlKey &&
-      !evt.metaKey &&
-      !evt.shiftKey &&
-      !evt.altKey
-    ) {
+    // if (
+    //   !keys[keyCode] &&
+    //   !evt.ctrlKey &&
+    //   !evt.metaKey &&
+    //   !evt.shiftKey &&
+    //   !evt.altKey
+    // ) {
       if (inputType) return;
       if (!isCollapsed) {
         this.undoManger.save(false, true);
         isCollapsed = true;
       }
-    }
+    //}
   });
   //扩展实例，添加关闭和开启命令undo
   me.stopCmdUndo = function() {
