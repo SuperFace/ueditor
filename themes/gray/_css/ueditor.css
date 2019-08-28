@@ -980,7 +980,7 @@ div.edui-box {
 }
 .edui-gray .edui-dialog-foot {
     background-color: white;
-    padding: 8px 15px 0 5px;
+    padding: 8px 15px 8px 5px;
     display: flex;
     align-items: center;
     justify-content: flex-end;

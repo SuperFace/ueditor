@@ -161,7 +161,7 @@ UE.plugins["undo"] = function() {
       clearTimeout(saveSceneTimer);
       var currentScene = this.getScene(notSetCursor),
         lastScene = this.list[this.index];
-        console.log(lastScene, currentScene);
+        //console.log(lastScene, currentScene);
       if (lastScene && (lastScene.content != currentScene.content || (this.index ==0 && !/^<p><br\/><\/p>$/.test(lastScene.content)))) {
         me.trigger("contentchange");
       }
@@ -265,8 +265,43 @@ UE.plugins["undo"] = function() {
     Redo: "ctrl+89" //redo
   });
   var isCollapsed = true;
+  var mergeBlanktxtHandler = null;
   me.addListener("keydown", function(type, evt) {
     var me = this;
+    if(mergeBlanktxtHandler) clearTimeout(mergeBlanktxtHandler);
+    mergeBlanktxtHandler = setTimeout(function(){
+      var count = 0;
+      var _blankArr = this.body.getElementsByClassName("ue-blank-item");
+      if(_blankArr.length > 0){
+          for (var i = 0, l = _blankArr.length; i < l; i++) {
+              var item = _blankArr[i];
+              if(item && domUtils.isEmptyNode(item)){
+                domUtils.remove(item);
+              }else if(item){
+                var _html = item.innerHTML;
+                var reg = /\【填空\d+\】.*/g;
+                if(reg.test(_html)){
+                  count++;
+                  var reg = /\【填空\d+\】/g;
+                  var txt = '【填空'+count+'】';
+                  item.innerHTML = _html.replace(reg, txt);
+                  var txt1 = _html.replace(reg, '');
+                  if(txt1){
+                    var txt1Node = document.createTextNode(txt1);
+                    domUtils.insertAfter(item, txt1Node);
+                    item.innerHTML = _html.replace(txt1, '');
+                    me.selection.getRange().setStartAfter(txt1Node).collapse(true).select(true);
+                  }
+                }else{
+                  var txtNode = document.createTextNode(_html);
+                  domUtils.insertAfter(item, txtNode);
+                  domUtils.remove(item);
+                }
+              }
+          }
+      }
+    }.bind(me), 500);
+
     var keyCode = evt.keyCode || evt.which;
     // if (
     //   !keys[keyCode] &&
@@ -275,7 +310,7 @@ UE.plugins["undo"] = function() {
     //   !evt.shiftKey &&
     //   !evt.altKey
     // ) {
-      console.log(inputType);
+      //console.log(inputType);
       if (inputType){
         return;
       }

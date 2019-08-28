@@ -4,7 +4,7 @@ UE.registerUI('kityformula', function(editor, uiname){
     var kfDialog = new UE.ui.Dialog({
 
         // 指定弹出层路径
-        iframeUrl: editor.options.UEDITOR_HOME_URL + 'third-party/kityformula/kityFormulaDialog.html',
+        iframeUrl: editor.options.UEDITOR_HOME_URL + 'third-party/kityformula/addKityFormula.html',
         // 编辑器实例
         editor: editor,
         // dialog 名称
