@@ -27,24 +27,14 @@ module.exports = function(grunt) {
           filepath = null,
           pattern = /@import\s+([^;]+)*;/g,
           src = [];
-
         while ((filepath = pattern.exec(sources))) {
           src.push(this.cssBasePath + filepath[1].replace(/'|"/g, ""));
         }
-
         return src;
       },
       
       fetchGrayStyles: function(){
-        var sources = fs.readFileSync(this.cssGrayPath + "ueditor.css"),
-          filepath = null,
-          pattern = /@import\s+([^;]+)*;/g,
-          src = [];
-
-        while ((filepath = pattern.exec(sources))) {
-          src.push(this.cssBasePath + filepath[1].replace(/'|"/g, ""));
-        }
-
+        var src = [this.cssGrayPath + "ueditor.css"];
         return src;
       }
     },
@@ -164,6 +154,7 @@ module.exports = function(grunt) {
               "themes/iframe.css",
               "themes/default/dialogbase.css",
               "themes/default/images/**",
+              "themes/gray/dialogbase.css",
               "themes/gray/images/**",
               "dialogs/**",
               "lang/**",
