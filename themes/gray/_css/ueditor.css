@@ -1,19 +1,21 @@
+
 @font-face {
-    font-family: 'iconfont';  /* project id 677298 */
-    src: url('http://at.alicdn.com/t/font_677298_b1719qsejxt.eot');
-    src: url('http://at.alicdn.com/t/font_677298_b1719qsejxt.eot?#iefix') format('embedded-opentype'),
-    url('http://at.alicdn.com/t/font_677298_b1719qsejxt.woff2') format('woff2'),
-    url('http://at.alicdn.com/t/font_677298_b1719qsejxt.woff') format('woff'),
-    url('http://at.alicdn.com/t/font_677298_b1719qsejxt.ttf') format('truetype'),
-    url('http://at.alicdn.com/t/font_677298_b1719qsejxt.svg#iconfont') format('svg');
+    font-family: 'uiconfont';  /* project id 677298 */
+    src: url('//at.alicdn.com/t/font_677298_ptvpoj01kpi.eot');
+    src: url('//at.alicdn.com/t/font_677298_ptvpoj01kpi.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_677298_ptvpoj01kpi.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_677298_ptvpoj01kpi.woff') format('woff'),
+    url('//at.alicdn.com/t/font_677298_ptvpoj01kpi.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_677298_ptvpoj01kpi.svg#iconfont') format('svg');
   }
 
 
 [class^="icon-for"]:before, 
 [class*=" edui-icon"]:before {
-    font-family: "iconfont";
+    font-family: "uiconfont";
     line-height: 20px;
 }
+
 
 /*基础UI构建
 */
@@ -41,6 +43,7 @@ div.edui-box {
 .edui-editor div {
     width: auto;
     height: auto;
+    line-height: initial; /*防止页面其他设置的line-height影响页面布局*/
 }
 
 .edui-toolbar .edui-state-disabled .edui-combox-body {
@@ -64,7 +67,7 @@ div.edui-box {
 .edui-toolbar,
 .edui-popup.edui-menu,
 .edui-dialog-titlebar {
-    font-family: "iconfont" !important;
+    font-family: "uiconfont" !important;
     font-size: 20px;
     font-style: normal;
     -webkit-font-smoothing: antialiased;
@@ -648,24 +651,16 @@ div.edui-box {
     align-items: center;
     justify-content: center;
 }
-.edui-gray .edui-button .edui-button-wrap .edui-button-body{
-    width:20px;
-    height:20px;
-}
 .edui-gray .edui-toolbar .edui-button.edui-for-kityformula .edui-icon{
     width:20px;
     height:20px;
     background: url(../images/kf-icon.png) !important;
 }
 .edui-gray .edui-toolbar .edui-button.edui-for-fillblank .edui-icon{
-    /* width:20px;
-    height:20px;
-    background: url(../images/fillblank-icon0.png) !important; */
-
-    width: 23px;
-    height: 20px;
-    background-image: url(../images/fillblank-icon.png) !important;
-    background-size: 23px 20px;
+    width: 25px;
+    height: 25px;
+    background-image: url(../images/fillblank-icon0.png) !important;
+    background-size: 25px 25px;
     background-position: center;
 }
 
@@ -984,6 +979,7 @@ div.edui-box {
 }
 .edui-gray .edui-dialog-foot {
     background-color: white;
+    /*padding: 8px 15px 0 5px;*/
     padding: 8px 15px 8px 5px;
     display: flex;
     align-items: center;
@@ -1003,10 +999,12 @@ div.edui-box {
 }
 
 .edui-gray .edui-dialog-buttons .edui-button .edui-button-body {
-    height: 34px;
+    /*height: 34px;*/
+    height:25px;
     width: 90px;
     font-size: 12px;
-    line-height: 34px;
+    /*line-height: 34px;*/
+    line-height:25px;
     background-color: #dfdfdf;
     text-align: center;
     cursor: pointer;

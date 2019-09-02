@@ -704,6 +704,7 @@
                 if (actionUrl.toLowerCase().indexOf('jsp') != -1) {
                     header['X-Requested-With'] = 'XMLHttpRequest';
                 }
+                header["x-csrftoken"] = _this.getToken();
             });
 
             uploader.on('uploadProgress', function (file, percentage) {
@@ -720,8 +721,16 @@
                 try {
                     var responseText = (ret._raw || ret),
                         json = utils.str2json(responseText);
-                    if (json.state == 'SUCCESS') {
-                        _this.imageList.push(json);
+                    if (json.state == 'SUCCESS' || json.success) {
+                        if (json.success) {
+                            let imgData = {
+                                url: json.data.url,
+                                original: "新的图片"
+                            }
+                            _this.imageList.push( imgData );
+                        } else {
+                            _this.imageList.push(json);
+                        }
                         $file.append('<span class="success"></span>');
                     } else {
                         $file.find('.error').text(json.state).show();
@@ -757,6 +766,16 @@
 
             $upload.addClass('state-' + state);
             updateTotalProgress();
+        },
+        getToken() {
+            let cookies = document.cookie.split(';');
+            let cookiesObj = {};
+            for(var i in cookies){
+                var item = cookies[i];
+                var s = item.split('=');
+                cookiesObj[s[0].replace(/\s/g, '')] = s[1].replace(/\s/g, '');
+            }
+            return cookiesObj["csrftoken"] || "";
         },
         getQueueCount: function () {
             var file, i, status, readyFile = 0, files = this.uploader.getFiles();

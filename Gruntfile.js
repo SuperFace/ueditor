@@ -156,6 +156,7 @@ module.exports = function(grunt) {
               "themes/default/images/**",
               "themes/gray/dialogbase.css",
               "themes/gray/images/**",
+              "themes/ueditor-list/**",
               "dialogs/**",
               "lang/**",
               "third-party/**"

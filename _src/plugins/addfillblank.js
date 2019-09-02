@@ -17,9 +17,8 @@
 UE.commands["fillblank"] = {
   execCommand: function(cmd, format) {
     var me = this;
-    var selection = me.selection;
-    var range = selection.getRange();
 
+    var range = me.selection.getRange();
     !range.collapsed && range.deleteContents();
 
     var count = this.body.getElementsByClassName("ue-blank-item").length;
@@ -33,14 +32,15 @@ UE.commands["fillblank"] = {
       var newBlankNode = document.createElement("span");
       newBlankNode.innerHTML = '【填空'+(count)+'】';
       domUtils.setAttributes(newBlankNode, {
-        class: "ue-blank-item"
+        class: "ue-blank-item",
+        style: "display:inline-block;"
       });
       domUtils.insertAfter(focusStartNode, newBlankNode);
     }else{
-      this.execCommand("inserthtml", '<span class="ue-blank-item">【填空'+(count)+'】</span>');
+      this.execCommand("inserthtml", '<span class="ue-blank-item" style="display:inline-block;">【填空'+(count)+'】</span>');
     }
     //end....
-
+    if(me.twoClearHandler) clearTimeout(me.twoClearHandler);
     setTimeout(function(){
       count = 0;
       var _blankArr = this.body.getElementsByClassName("ue-blank-item");
@@ -72,8 +72,8 @@ UE.commands["fillblank"] = {
               }
           }
       }
-      setTimeout(function(){
-        count = 0;
+      me.twoClearHandler = setTimeout(function(){
+        //count = 0;
         var _blankArr = this.body.getElementsByClassName("ue-blank-item");
         if(_blankArr.length > 0){
             for (var i = 0, l = _blankArr.length; i < l; i++) {
@@ -81,24 +81,24 @@ UE.commands["fillblank"] = {
                 if(item && domUtils.isEmptyNode(item)){
                   domUtils.remove(item);
                 }else if(item){
-                  var _html = item.innerHTML;
-                  var reg = /\【填空\d+\】.*/g;
-                  if(reg.test(_html)){
-                    count++;
-                    var reg = /\【填空\d+\】/g;
-                    var txt = '【填空'+count+'】';
-                    item.innerHTML = _html.replace(reg, txt);
-                    var txt1 = _html.replace(reg, '');
-                    if(txt1){
-                      var txt1Node = document.createTextNode(txt1);
-                      domUtils.insertAfter(item, txt1Node);
-                      item.innerHTML = _html.replace(txt1, '');
-                    }
-                  }else{
-                    var txtNode = document.createTextNode(_html);
-                    domUtils.insertAfter(item, txtNode);
-                    domUtils.remove(item);
-                  }
+                  // var _html = item.innerHTML;
+                  // var reg = /\【填空\d+\】.*/g;
+                  // if(reg.test(_html)){
+                  //   count++;
+                  //   var reg = /\【填空\d+\】/g;
+                  //   var txt = '【填空'+count+'】';
+                  //   item.innerHTML = _html.replace(reg, txt);
+                  //   var txt1 = _html.replace(reg, '');
+                  //   if(txt1){
+                  //     var txt1Node = document.createTextNode(txt1);
+                  //     domUtils.insertAfter(item, txt1Node);
+                  //     item.innerHTML = _html.replace(txt1, '');
+                  //   }
+                  // }else{
+                  //   var txtNode = document.createTextNode(_html);
+                  //   domUtils.insertAfter(item, txtNode);
+                  //   domUtils.remove(item);
+                  // }
                 }
             }
         }
