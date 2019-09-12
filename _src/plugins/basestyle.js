@@ -110,38 +110,73 @@ UE.plugins["basestyle"] = function() {
     (function(cmd, tagNames) {
       me.commands[cmd] = {
         execCommand: function(cmdName) {
-          var range = me.selection.getRange(),
-            obj = getObj(this, tagNames);
-          if (range.collapsed) {
-            if (obj) {
-              var tmpText = me.document.createTextNode("");
-              range.insertNode(tmpText).removeInlineStyle(tagNames);
-              range.setStartBefore(tmpText);
-              domUtils.remove(tmpText);
-            } else {
-              var tmpNode = range.document.createElement(tagNames[0]);
-              if (cmdName == "superscript" || cmdName == "subscript") {
-                tmpText = me.document.createTextNode("");
-                range
-                  .insertNode(tmpText)
-                  .removeInlineStyle(["sub", "sup"])
-                  .setStartBefore(tmpText)
-                  .collapse(true);
-              }
-              range.insertNode(tmpNode).setStart(tmpNode, 0);
-            }
-            range.collapse(true);
-          } else {
-            if (cmdName == "superscript" || cmdName == "subscript") {
-              if (!obj || obj.tagName.toLowerCase() != cmdName) {
-                range.removeInlineStyle(["sub", "sup"]);
-              }
-            }
-            obj
-              ? range.removeInlineStyle(tagNames)
-              : range.applyInlineStyle(tagNames[0]);
+          //填空题
+          var range = me.selection.getRange();
+          var _startContainer = range.startContainer, 
+              _endContainer = range.endContainer;
+          if(_startContainer.nodeType==3 && domUtils.hasClass(_startContainer.parentNode, "blank-item")){
+            range.setStartBefore(_startContainer.parentNode);
           }
-          range.select();
+          if(_endContainer.nodeType==3 && domUtils.hasClass(_endContainer.parentNode, "blank-item")){
+            range.setEndAfter(_endContainer.parentNode);
+          }
+
+          setTimeout(function(){
+            range = me.selection.getRange(),
+            obj = getObj(this, tagNames);
+            if (range.collapsed) {
+              if (obj) {
+                var tmpText = me.document.createTextNode("");
+                range.insertNode(tmpText).removeInlineStyle(tagNames);
+                range.setStartBefore(tmpText);
+                domUtils.remove(tmpText);
+              } else {
+                var tmpNode = range.document.createElement(tagNames[0]);
+                if (cmdName == "superscript" || cmdName == "subscript") {
+                  tmpText = me.document.createTextNode("");
+                  range
+                    .insertNode(tmpText)
+                    .removeInlineStyle(["sub", "sup"])
+                    .setStartBefore(tmpText)
+                    .collapse(true);
+                }
+                range.insertNode(tmpNode).setStart(tmpNode, 0);
+              }
+              range.collapse(true);
+            } else {
+              if (cmdName == "superscript" || cmdName == "subscript") {
+                if (!obj || obj.tagName.toLowerCase() != cmdName) {
+                  range.removeInlineStyle(["sub", "sup"]);
+                }
+              }
+              obj
+                ? range.removeInlineStyle(tagNames)
+                : range.applyInlineStyle(tagNames[0]);
+            }
+            range.select();
+
+            setTimeout(function(){
+              //删除产生的空填空结点
+              var _blankArr = this.body.getElementsByClassName("blank-item");
+              if(_blankArr.length > 0){
+                  for (var i = 0, l = _blankArr.length; i < l; i++) {//遍历填空元素
+                      var item = _blankArr[i];
+                      if(item && domUtils.isEmptyNode(item)){//空
+                        domUtils.remove(item);
+                      }else if(item){
+                       
+                      }
+                  }
+              }
+
+              //当前焦点开始结点
+              var focusStartNode = me.selection.getStart(); 
+              //规范文本结点
+              focusStartNode.normalize();
+              focusStartNode.parentNode.normalize();
+            }.bind(me), 200);
+          }.bind(me), 100);
+
         },
         queryCommandState: function() {
           return getObj(this, tagNames) ? 1 : 0;

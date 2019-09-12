@@ -372,114 +372,160 @@ UE.plugins["font"] = function() {
     (function(cmd, style) {
       UE.commands[cmd] = {
         execCommand: function(cmdName, value) {
-          value =
-            value ||
-            (this.queryCommandState(cmdName)
-              ? "none"
-              : cmdName == "underline"
-                ? "underline"
-                : cmdName == "fontborder" ? "1px solid #000" : "line-through");
-          var me = this,
-            range = this.selection.getRange(),
-            text;
+          var me = this;
+          //填空题
+          var focusStartNode = me.selection.getStart(); 
+          var range = me.selection.getRange();
+          var _startContainer = range.startContainer, 
+              _endContainer = range.endContainer;
+          var isOnlyBlank = false,hasLeftBlank = false, hasRightBlank = false;
+          if(_startContainer.nodeType==3 && domUtils.hasClass(_startContainer.parentNode, "blank-item")){
+            range.setStartBefore(_startContainer.parentNode);
+            hasLeftBlank = true;
+          }
+          if(_endContainer.nodeType==3 && domUtils.hasClass(_endContainer.parentNode, "blank-item")){
+            range.setEndAfter(_endContainer.parentNode);
+            hasRightBlank = true;
+          }
+          if(focusStartNode.nodeType==1 && domUtils.hasClass(focusStartNode, "blank-item") 
+              && _startContainer.nodeType==3 && domUtils.hasClass(_startContainer.parentNode, "blank-item") 
+              && _endContainer.nodeType==3 && domUtils.hasClass(_endContainer.parentNode, "blank-item") 
+              && _startContainer == _endContainer){
+                isOnlyBlank = true;
+          }
 
-          if (value == "default") {
-            if (range.collapsed) {
-              text = me.document.createTextNode("font");
-              range.insertNode(text).select();
-            }
-            me.execCommand("removeFormat", "span,a", style);
-            if (text) {
-              range.setStartBefore(text).collapse(true);
-              domUtils.remove(text);
-            }
-            mergesibling(range, cmdName, value);
-            range.select();
-          } else {
-            if (!range.collapsed) {
-              if (needCmd[cmd] && me.queryCommandValue(cmd)) {
-                me.execCommand("removeFormat", "span,a", style);
+          setTimeout(function(){
+            value =
+              value ||
+              (this.queryCommandState(cmdName)
+                ? "none"
+                : cmdName == "underline"
+                  ? "underline"
+                  : cmdName == "fontborder" ? "1px solid #000" : "line-through");
+            var text;
+            range = this.selection.getRange();
+            if (value == "default") {
+              if (range.collapsed) {
+                text = me.document.createTextNode("font");
+                range.insertNode(text).select();
               }
-              range = me.selection.getRange();
-
-              range.applyInlineStyle("span", { style: style + ":" + value });
+              me.execCommand("removeFormat", "span,a", style);
+              if (text) {
+                range.setStartBefore(text).collapse(true);
+                domUtils.remove(text);
+              }
               mergesibling(range, cmdName, value);
               range.select();
             } else {
-              var span = domUtils.findParentByTagName(
-                range.startContainer,
-                "span",
-                true
-              );
-              text = me.document.createTextNode("font");
-              if (
-                span &&
-                !span.children.length &&
-                !span[browser.ie ? "innerText" : "textContent"].replace(
-                  fillCharReg,
-                  ""
-                ).length
-              ) {
-                //for ie hack when enter
-                range.insertNode(text);
-                if (needCmd[cmd]) {
-                  range.selectNode(text).select();
-                  me.execCommand("removeFormat", "span,a", style, null);
-
-                  span = domUtils.findParentByTagName(text, "span", true);
-                  range.setStartBefore(text);
-                }
-                span && (span.style.cssText += ";" + style + ":" + value);
-                range.collapse(true).select();
-              } else {
-                range.insertNode(text);
-                range.selectNode(text).select();
-                span = range.document.createElement("span");
-
-                if (needCmd[cmd]) {
-                  //a标签内的不处理跳过
-                  if (domUtils.findParentByTagName(text, "a", true)) {
-                    range.setStartBefore(text).setCursor();
-                    domUtils.remove(text);
-                    return;
-                  }
+              if (!range.collapsed) {
+                if (needCmd[cmd] && me.queryCommandValue(cmd)) {
+                  console.log( style);
                   me.execCommand("removeFormat", "span,a", style);
                 }
-
-                span.style.cssText = style + ":" + value;
-
-                text.parentNode.insertBefore(span, text);
-                //修复，span套span 但样式不继承的问题
-                if (!browser.ie || (browser.ie && browser.version == 9)) {
-                  var spanParent = span.parentNode;
-                  while (!domUtils.isBlockElm(spanParent)) {
-                    if (spanParent.tagName == "SPAN") {
-                      //opera合并style不会加入";"
-                      span.style.cssText =
-                        spanParent.style.cssText + ";" + span.style.cssText;
-                    }
-                    spanParent = spanParent.parentNode;
-                  }
+                range = me.selection.getRange();
+                var attrs = { style: style + ":" + value };
+                if(isOnlyBlank){
+                  attrs = { "style": style + ":" + value, "class": "blank-item" };
                 }
+                range.applyInlineStyle("span", attrs);
+                mergesibling(range, cmdName, value);
+                range.select();
+              } else {
+                var span = domUtils.findParentByTagName(
+                  range.startContainer,
+                  "span",
+                  true
+                );
+                text = me.document.createTextNode("font");
+                if (
+                  span &&
+                  !span.children.length &&
+                  !span[browser.ie ? "innerText" : "textContent"].replace(
+                    fillCharReg,
+                    ""
+                  ).length
+                ) {
+                  //for ie hack when enter
+                  range.insertNode(text);
+                  if (needCmd[cmd]) {
+                    range.selectNode(text).select();
+                    me.execCommand("removeFormat", "span,a", style, null);
 
-                if (opera) {
-                  setTimeout(function() {
+                    span = domUtils.findParentByTagName(text, "span", true);
+                    range.setStartBefore(text);
+                  }
+                  span && (span.style.cssText += ";" + style + ":" + value);
+                  range.collapse(true).select();
+                } else {
+                  range.insertNode(text);
+                  range.selectNode(text).select();
+                  span = range.document.createElement("span");
+
+                  if (needCmd[cmd]) {
+                    //a标签内的不处理跳过
+                    if (domUtils.findParentByTagName(text, "a", true)) {
+                      range.setStartBefore(text).setCursor();
+                      domUtils.remove(text);
+                      return;
+                    }
+                    me.execCommand("removeFormat", "span,a", style);
+                  }
+
+                  span.style.cssText = style + ":" + value;
+
+                  text.parentNode.insertBefore(span, text);
+                  //修复，span套span 但样式不继承的问题
+                  if (!browser.ie || (browser.ie && browser.version == 9)) {
+                    var spanParent = span.parentNode;
+                    while (!domUtils.isBlockElm(spanParent)) {
+                      if (spanParent.tagName == "SPAN") {
+                        //opera合并style不会加入";"
+                        span.style.cssText =
+                          spanParent.style.cssText + ";" + span.style.cssText;
+                      }
+                      spanParent = spanParent.parentNode;
+                    }
+                  }
+
+                  if (opera) {
+                    setTimeout(function() {
+                      range.setStart(span, 0).collapse(true);
+                      mergesibling(range, cmdName, value);
+                      range.select();
+                    });
+                  } else {
                     range.setStart(span, 0).collapse(true);
                     mergesibling(range, cmdName, value);
                     range.select();
-                  });
-                } else {
-                  range.setStart(span, 0).collapse(true);
-                  mergesibling(range, cmdName, value);
-                  range.select();
-                }
+                  }
 
-                //trace:981
-                //domUtils.mergeToParent(span)
+                  //trace:981
+                  //domUtils.mergeToParent(span)
+                }
+                domUtils.remove(text);
               }
-              domUtils.remove(text);
             }
-          }
+            setTimeout(function(){
+              //删除产生的空填空结点
+              var _blankArr = this.body.getElementsByClassName("blank-item");
+              if(_blankArr.length > 0){
+                  for (var i = 0, l = _blankArr.length; i < l; i++) {//遍历填空元素
+                      var item = _blankArr[i];
+                      if(item && domUtils.isEmptyNode(item)){//空
+                        domUtils.remove(item);
+                      }else if(item){
+                        
+                      }
+                  }
+              }
+
+              //当前焦点开始结点
+              var focusStartNode = me.selection.getStart(); 
+              //规范文本结点
+              focusStartNode.normalize();
+              focusStartNode.parentNode.normalize();
+            }.bind(me), 200);
+          }.bind(me), 100);
           return true;
         },
         queryCommandValue: function(cmdName) {

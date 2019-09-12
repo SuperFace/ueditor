@@ -318,9 +318,7 @@ UE.plugins["undo"] = function() {
 
     if(me.mergeBlanktxtHandler) clearTimeout(me.mergeBlanktxtHandler);
     var focusStartNode = me.selection.getStart();  
-    console.log(focusStartNode);
     var childNodes = focusStartNode.childNodes;
-    console.log(childNodes);
 
     var keyCode = evt.keyCode || evt.which;
     // if (
@@ -336,43 +334,6 @@ UE.plugins["undo"] = function() {
         isCollapsed = true;
       }
     //}
-
-    me.mergeBlanktxtHandler = setTimeout(function(){
-      var count = 0;
-      var _blankArr = this.body.getElementsByClassName("ue-blank-item");
-      var bodyHTML = this.body.innerHTML;
-      if(_blankArr.length > 0){
-          for (var i = 0, l = _blankArr.length; i < l; i++) {
-              var item = _blankArr[i];
-              if(item && domUtils.isEmptyNode(item)){
-                domUtils.remove(item);
-              }else if(item){
-                var _html = item.innerHTML;
-                var reg = /\【填空\d+\】.*/g;
-                if(reg.test(_html)){
-                  count++;
-                  var reg = /\【填空\d+\】/g;
-                  var reg1 = /\【.*填.*空[^\d]*\d+.*\】/g;
-                  var txt = '【填空'+count+'】';
-                  _html = _html.replace(reg, txt);
-                  var txtArr = _html.replace(reg1, ' ').split(' ');
-                  var txtLeft = txtArr[0];
-                  var txtRight = txtArr[1];
-                  if(txtRight){
-                    var txtRightNode = document.createTextNode(txtRight);
-                    domUtils.insertAfter(item, txtRightNode);
-                    _html = _html.replace(txtRight, '');
-                    me.selection.getRange().setStartAfter(txtRightNode).collapse(true).select(true);
-                  }
-                }else{
-                  var txtNode = document.createTextNode(_html);
-                  domUtils.insertAfter(item, txtNode);
-                  domUtils.remove(item);
-                }
-              }
-          }
-      }
-    }.bind(me), 500);
   });
   //扩展实例，添加关闭和开启命令undo
   me.stopCmdUndo = function() {
