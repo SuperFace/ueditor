@@ -390,7 +390,10 @@ UE.plugins["font"] = function() {
           if(focusStartNode.nodeType==1 && domUtils.hasClass(focusStartNode, "blank-item") 
               && _startContainer.nodeType==3 && domUtils.hasClass(_startContainer.parentNode, "blank-item") 
               && _endContainer.nodeType==3 && domUtils.hasClass(_endContainer.parentNode, "blank-item") 
-              && _startContainer == _endContainer){
+              && _startContainer == _endContainer 
+              || (focusStartNode.nodeType==1 && domUtils.hasClass(focusStartNode, "blank-item") 
+                  && _startContainer == _endContainer 
+                  && focusStartNode == _startContainer)){
                 isOnlyBlank = true;
           }
 
@@ -417,25 +420,31 @@ UE.plugins["font"] = function() {
               mergesibling(range, cmdName, value);
               range.select();
             } else {
-              if (!range.collapsed) {
+              if (!range.collapsed) {//非闭合选区
                 if (needCmd[cmd] && me.queryCommandValue(cmd)) {
-                  console.log( style);
                   me.execCommand("removeFormat", "span,a", style);
                 }
                 range = me.selection.getRange();
                 var attrs = { style: style + ":" + value };
+                if(value == "none"){
+                  attrs = { style: style + ":" + value, "class": "ue-font" };
+                }
                 if(isOnlyBlank){
                   attrs = { "style": style + ":" + value, "class": "blank-item" };
                 }
+
                 range.applyInlineStyle("span", attrs);
                 mergesibling(range, cmdName, value);
                 range.select();
-              } else {
+              } else {//闭合选区
                 var span = domUtils.findParentByTagName(
                   range.startContainer,
                   "span",
                   true
                 );
+                if(value == "none"){
+                  domUtils.addClass(span, "ue-font");
+                }
                 text = me.document.createTextNode("font");
                 if (
                   span &&
@@ -504,27 +513,19 @@ UE.plugins["font"] = function() {
                 }
                 domUtils.remove(text);
               }
-            }
-            setTimeout(function(){
-              //删除产生的空填空结点
-              var _blankArr = this.body.getElementsByClassName("blank-item");
-              if(_blankArr.length > 0){
-                  for (var i = 0, l = _blankArr.length; i < l; i++) {//遍历填空元素
-                      var item = _blankArr[i];
-                      if(item && domUtils.isEmptyNode(item)){//空
-                        domUtils.remove(item);
-                      }else if(item){
-                        
-                      }
+              //删除产生的无用ue-font：
+              var _fontItem = this.body.getElementsByClassName("ue-font");
+              if(_fontItem.length > 0){
+                for(var n=0, l = _fontItem.length; n < l; n++){
+                  var item = _fontItem[n];
+                  if(item && domUtils.isEmptyNode(item)){//空
+                    domUtils.remove(item);
+                  }else if(item){
+                    domUtils.remove(item, true);//删除节点node，保留子节点
                   }
+                }
               }
-
-              //当前焦点开始结点
-              var focusStartNode = me.selection.getStart(); 
-              //规范文本结点
-              focusStartNode.normalize();
-              focusStartNode.parentNode.normalize();
-            }.bind(me), 200);
+            }
           }.bind(me), 100);
           return true;
         },

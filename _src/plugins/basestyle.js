@@ -154,27 +154,6 @@ UE.plugins["basestyle"] = function() {
                 : range.applyInlineStyle(tagNames[0]);
             }
             range.select();
-
-            setTimeout(function(){
-              //删除产生的空填空结点
-              var _blankArr = this.body.getElementsByClassName("blank-item");
-              if(_blankArr.length > 0){
-                  for (var i = 0, l = _blankArr.length; i < l; i++) {//遍历填空元素
-                      var item = _blankArr[i];
-                      if(item && domUtils.isEmptyNode(item)){//空
-                        domUtils.remove(item);
-                      }else if(item){
-                       
-                      }
-                  }
-              }
-
-              //当前焦点开始结点
-              var focusStartNode = me.selection.getStart(); 
-              //规范文本结点
-              focusStartNode.normalize();
-              focusStartNode.parentNode.normalize();
-            }.bind(me), 200);
           }.bind(me), 100);
 
         },
