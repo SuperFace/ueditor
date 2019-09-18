@@ -379,6 +379,7 @@ UE.plugins["font"] = function() {
           var _startContainer = range.startContainer, 
               _endContainer = range.endContainer;
           var isOnlyBlank = false,hasLeftBlank = false, hasRightBlank = false;
+
           if(_startContainer.nodeType==3 && domUtils.hasClass(_startContainer.parentNode, "blank-item")){
             range.setStartBefore(_startContainer.parentNode);
             hasLeftBlank = true;
@@ -396,7 +397,6 @@ UE.plugins["font"] = function() {
                   && focusStartNode == _startContainer)){
                 isOnlyBlank = true;
           }
-
           setTimeout(function(){
             value =
               value ||
@@ -432,7 +432,6 @@ UE.plugins["font"] = function() {
                 if(isOnlyBlank){
                   attrs = { "style": style + ":" + value, "class": "blank-item" };
                 }
-
                 range.applyInlineStyle("span", attrs);
                 mergesibling(range, cmdName, value);
                 range.select();
@@ -526,6 +525,7 @@ UE.plugins["font"] = function() {
                 }
               }
             }
+            me.trigger("contentchange");
           }.bind(me), 100);
           return true;
         },

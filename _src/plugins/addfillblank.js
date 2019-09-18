@@ -49,76 +49,84 @@ UE.plugins["addfillblank"] = function() {
       }
     }.bind(me);
 
+    //重新排序、格式化填空题
+    var resetOrder = function(){
+      var focusStartNode = me.selection.getStart(); 
+      var count = 0;
+      var _blankArr = this.body.getElementsByClassName("blank-item");
+      if(_blankArr.length > 0){
+          for (var i = 0, l = _blankArr.length; i < l; i++) {//遍历填空元素
+              var item = _blankArr[i];
+              if(item && domUtils.isEmptyNode(item)){//空
+                domUtils.remove(item);
+              }else if(item){
+                var _html = item.innerHTML;
+                var reg = /\[填空\d+\]/g;
+                var reg1 = /\].*\[/g;
+                var regHTML = /<\/?.+?\/?>/g;
+                _html = _html.replace(regHTML, '').replace(/\u200B/g,'');
+                if(reg.test(_html)){//重新排列序号
+                  var txt1 = _html.replace(reg, '');
+                  var isMulit = reg1.test(_html);
+                  if(txt1 || isMulit){
+                    var execObj = null, index1=0, index2=0, itemTxt='';
+                    var frag = doc.createDocumentFragment();
+                    while(execObj = reg.exec(_html)){
+                      itemTxt = execObj[0];
+                      index2 = execObj.index;
+                      var ssHtml = _html.substring(index1, index2);
+                      if(!!ssHtml){
+                        var txtNode = doc.createTextNode(ssHtml);
+                        frag.appendChild(txtNode);
+                      }
+
+                      var newBlankNode = doc.createElement("span");
+                      newBlankNode.innerHTML = '[填空'+(++count)+']';
+                      domUtils.setAttributes(newBlankNode, {
+                        class: "blank-item",
+                        style: "display:inline-block;"
+                      });
+                      frag.appendChild(newBlankNode);
+                      index1 = index2 + itemTxt.length;
+                    }
+                    var ssHtml = _html.substr(index1);
+                    var txtNode = doc.createTextNode(ssHtml);
+                    frag.appendChild(txtNode);
+                    domUtils.insertAfter(item, frag);
+                    if(focusStartNode == item) focusStartNode = txtNode;
+                    domUtils.remove(item);
+                    me.selection.getRange().setStartAfter(focusStartNode).collapse(true).select(true);
+                  }else{
+                    var txt = '[填空'+(++count)+']';
+                    item.innerHTML = _html.replace(reg, txt);
+                  }
+                }else{
+                  var txtNode = doc.createTextNode(_html);
+                  domUtils.insertAfter(item, txtNode);
+                  if(focusStartNode == item) focusStartNode = txtNode;
+                  domUtils.remove(item);
+                  me.selection.getRange().setStartAfter(focusStartNode).collapse(true).select(true);
+                }
+              }
+          }
+      }
+    }.bind(me);
+
     me.onwClearHandler = setTimeout(function(){
       //遍历所有文本结点
       traversalNodes();
-      
       //重新排序
-      me.twoClearHandler = setTimeout(function(){
-        var count = 0;
-        var _blankArr = this.body.getElementsByClassName("blank-item");
-        if(_blankArr.length > 0){
-            for (var i = 0, l = _blankArr.length; i < l; i++) {//遍历填空元素
-                var item = _blankArr[i];
-                if(item && domUtils.isEmptyNode(item)){//空
-                  domUtils.remove(item);
-                }else if(item){
-                  var _html = item.innerHTML;
-                  var reg = /\[填空\d+\]/g;
-                  var regHTML = /<\/?.+?\/?>/g;
-                  _html = _html.replace(regHTML, '').replace(/\u200B/g,'');
-                  if(reg.test(_html)){//重新排列序号
-                    var txt1 = _html.replace(reg, '');
-                    if(txt1){
-                      var execObj = null, index1=0, index2=0, itemTxt='';
-                      var frag = doc.createDocumentFragment();
-                      while(execObj = reg.exec(_html)){
-                        itemTxt = execObj[0];
-                        index2 = execObj.index;
-                        var ssHtml = _html.substring(index1, index2);
-                        if(!!ssHtml){
-                          var txtNode = doc.createTextNode(ssHtml);
-                          frag.appendChild(txtNode);
-                        }
+      resetOrder();
 
-                        var newBlankNode = doc.createElement("span");
-                        newBlankNode.innerHTML = '[填空'+(++count)+']';
-                        domUtils.setAttributes(newBlankNode, {
-                          class: "blank-item",
-                          style: "display:inline-block;"
-                        });
-                        frag.appendChild(newBlankNode);
-                        index1 = index2;
-                        index1 += itemTxt.length;
-                      }
-                      var ssHtml = _html.substr(index1);
-                      var txtNode = doc.createTextNode(ssHtml);
-                      frag.appendChild(txtNode);
-                      domUtils.insertAfter(item, frag);
-                      domUtils.remove(item);
-                      me.selection.getRange().setStartAfter(txtNode).collapse(true).select(true);
-                    }else{
-                      var txt = '[填空'+(++count)+']';
-                      item.innerHTML = _html.replace(reg, txt);
-                    }
-                  }else{
-                    var txtNode = doc.createTextNode(_html);
-                    domUtils.insertAfter(item, txtNode);
-                    domUtils.remove(item);
-                    me.selection.getRange().setStartAfter(txtNode).collapse(true).select(true);
-                  }
-                }
-            }
-        } 
-        setTimeout(function(){
-          //当前焦点开始结点
-          var focusStartNode = me.selection.getStart(); 
-          //规范文本结点
-          focusStartNode.normalize();
-          focusStartNode.parentNode.normalize();
-        }.bind(me), 100);
+      me.twoClearHandler = setTimeout(function(){
+        //二次重新排序
+        resetOrder();
+        //规范文本结点
+        var focusStartNode = me.selection.getStart(); 
+        focusStartNode.normalize();
+        focusStartNode.parentNode.normalize();
       }.bind(me), 100);
-    }.bind(me), 160);
+    }.bind(me), 200);
     //end。。。。
   }.bind(me));
 
@@ -174,15 +182,12 @@ UE.plugins["addfillblank"] = function() {
             me.selection.getRange().setStartAfter(_startContainer.parentNode).collapse(true).select(true);
             domUtils.insertAfter(_startContainer.parentNode, newBlankNode);
           }else{
-            this.execCommand("inserthtml", '<span class="blank-item" style="display:inline-block;">[填空'+(count)+']</span>');
+            this.execCommand("inserthtml", '<span class="blank-item" style="display:inline-block;">[填空'+(count)+']</span>&#8203;');
           }
         }
       }else{//当前光标所在结点为非填空元素
-        this.execCommand("inserthtml", '<span class="blank-item" style="display:inline-block;">[填空'+(count)+']</span>');
+        this.execCommand("inserthtml", '<span class="blank-item" style="display:inline-block;">[填空'+(count)+']</span>&#8203;');
       }
-      //规范化文本结点
-      focusStartNode.normalize();
-      focusStartNode.parentNode.normalize();
       //end....插入html
     }
   };
