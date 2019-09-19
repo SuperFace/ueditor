@@ -13,7 +13,7 @@ UE.plugins["addfillblank"] = function() {
     var keyCode = evt.keyCode || evt.which;
   }.bind((me)));
 
-  me.addListener("contentchange", function() {
+  me.addListener("contentchange", function(e, data) {
     var doc = this.body.ownerDocument;
     //纠正填空结点序号，并将不是完整的填空结点文本化
     if(me.onwClearHandler) clearTimeout(me.onwClearHandler);
@@ -125,8 +125,8 @@ UE.plugins["addfillblank"] = function() {
         var focusStartNode = me.selection.getStart(); 
         focusStartNode.normalize();
         focusStartNode.parentNode.normalize();
-      }.bind(me), 100);
-    }.bind(me), 200);
+      }.bind(me), 0);
+    }.bind(me), 0);
     //end。。。。
   }.bind(me));
 
