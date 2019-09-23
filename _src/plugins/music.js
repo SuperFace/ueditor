@@ -21,7 +21,6 @@ UE.plugin.register("music", function() {
           me.options.lang +
           '/images/music.png" />'
       : 
-      //'<audio class="edui-faked-music" controls="controls" src="'+ url+'" width="'+width+'" height="'+height+'" '+(align&&!cssfloat?'align="'+align+'"':"")+(cssfloat?'style="float:'+cssfloat+'"':"")+'>';
       '<embed type="application/x-shockwave-flash" class="edui-faked-music" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
           ' src="' +
           url +
