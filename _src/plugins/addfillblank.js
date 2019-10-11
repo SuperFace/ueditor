@@ -76,6 +76,7 @@ UE.plugins["addfillblank"] = function() {
                       index2 = execObj.index;
                       var ssHtml = _html.substring(index1, index2);
                       if(!!ssHtml){
+                        ssHtml = ssHtml.replace(/&nbsp;/g, " ");
                         var txtNode = doc.createTextNode(ssHtml);
                         frag.appendChild(txtNode);
                       }
@@ -90,6 +91,7 @@ UE.plugins["addfillblank"] = function() {
                       index1 = index2 + itemTxt.length;
                     }
                     var ssHtml = _html.substr(index1);
+                    ssHtml = ssHtml.replace(/&nbsp;/g, " ");
                     var txtNode = doc.createTextNode(ssHtml);
                     frag.appendChild(txtNode);
                     domUtils.insertAfter(item, frag);
@@ -101,6 +103,7 @@ UE.plugins["addfillblank"] = function() {
                     item.innerHTML = _html.replace(reg, txt);
                   }
                 }else{
+                  _html = _html.replace(/&nbsp;/g, " ");
                   var txtNode = doc.createTextNode(_html);
                   domUtils.insertAfter(item, txtNode);
                   if(focusStartNode == item) focusStartNode = txtNode;
