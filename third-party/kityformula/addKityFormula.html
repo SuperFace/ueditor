@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="./assets/styles/base.css">
+    <link rel="stylesheet" href="./assets/styles/ui.css">
+    <link rel="stylesheet" href="./assets/styles/scrollbar.css">
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+        .kf-editor {
+            width: 780px;
+            height: 380px;
+        }
+        #loading {
+            height: 32px;
+            width: 300px;
+            line-height: 32px;
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            margin-left: -150px;
+            font-family: arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+        }
+        #loading img {
+            position: absolute;
+        }
+        #loading p {
+            display: block;
+            position: absolute;
+            left: 40px;
+            top: 0px;
+            margin: 0;
+        }
+
+    </style>
+
+    <title></title>
+</head>
+<body>
+<div id="kfEditorContainer" class="kf-editor">
+    <div id="tips" class="tips">
+        sorry! Beta版本仅支持IE9及以上版本的浏览器，正式版本将会支持低版本浏览器，谢谢您的关注！
+    </div>
+</div>
+<!--页面中一定要引入internal.js为了能直接使用当前打开dialog的实例变量-->
+<!--internal.js默认是放到dialogs目录下的-->
+<script type="text/javascript" src="../../dialogs/internal.js"></script>
+
+<script src="./js/jquery-1.11.0.min.js"></script>
+<script src="./js/kitygraph.all.js"></script>
+<script src="./js/kity-formula-render.all.js"></script>
+<script src="./js/kity-formula-parser.all.js"></script>
+<script src="./js/kityformula-editor.all.js"></script>
+<script>
+    jQuery( function ($) {
+
+        if ( document.body.addEventListener ) {
+
+            $( "#tips").html('<div id="loading"><img src="./loading.gif" alt="loading" /><p>正在加载，请耐心等待...</p></div>' );
+
+            var factory = kf.EditorFactory.create( $( "#kfEditorContainer" )[ 0 ], {
+                render: {
+                    fontsize: 24
+                },
+                resource: {
+                    path: "./resource/"
+                }
+            } );
+
+            factory.ready( function ( KFEditor ) {
+
+                $( "#tips").remove();
+
+                // this指向KFEditor
+                var rng = editor.selection.getRange(),
+                    img = rng.getClosedNode(),
+                    imgLatex = img && $(img).attr('data-latex'), _display = img && $(img).attr("data-display");
+
+                this.execCommand( "render", imgLatex || "\\placeholder" );
+                this.execCommand( "focus" );
+
+                $(".select-display-box").find(".select").removeClass("selected");
+                $(".select-display-box").find(".select[data-select="+(_display || 'inline-block')+"]").addClass("selected");
+                $(".select-display-box").find(".select").on("click", function(){
+                    var $this = $(this);
+                    $(".select-display-box").find(".select").removeClass("selected");
+                    $this.addClass("selected");
+                });
+
+                window.kfe = this;
+
+            } );
+
+            dialog.onok = function(){
+                kfe.execCommand('get.image.data', function(data){
+                    var latex = kfe.execCommand('get.source');
+                    var _latex = latex.replace(/\\/g, "\\\\");
+                    var display = $(".select-display-box").find(".select.selected").attr("data-select");
+                    var imgDisplay = '';
+                    if(display=='block'){
+                        imgDisplay = 'display:block;margin:0 auto;';
+                    }
+                    var _html = '<img class="kfformula" style="vertical-align: middle;' + imgDisplay + '" src="'+ data.img +'" data-display="' + display + '" data-slatex="' + _latex + '" data-latex="' + latex + '" />';
+                    if(display == 'block'){
+                        _html = '<p>' + _html + '</p>';
+                    }
+                    editor.execCommand('inserthtml', _html);
+                    //var _latexHTML = '<span class="kfformula-latex" readonly="true" disabled="true" style="position:relative;display:inline-block;padding:0 5px;">$' + latex + '$</span>';
+                    //editor.execCommand('inserthtml', _latexHTML);
+                    dialog.close();
+                });
+
+                return false;
+            }
+
+        } else {
+            $( "#tips").css( "color", "black" );
+            $( "#tips").css( "padding", "10px" );
+        }
+
+    } );
+</script>
+</body>
+</html>
