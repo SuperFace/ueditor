@@ -28,7 +28,7 @@
     UEDITOR_HOME_URL: URL,
 
     // 服务器统一请求接口路径
-    serverUrl: URL + "oplat/ueditor/ue",
+    serverUrl: "server-url-data.json",
     imageActionName: "uploadimage",
     fileActionName: "uploadfile",
     videoActionName: "uploadvideo",
