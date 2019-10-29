@@ -79,6 +79,7 @@
     "removeformat",
     "time",
     "date",
+    "fillblank",
     "unlink",
     "insertparagraphbeforetable",
     "insertrow",
@@ -249,7 +250,8 @@
       "template",
       "music",
       "background",
-      "charts"
+      "charts",
+      "kityformula"
     ]
   };
 

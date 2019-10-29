@@ -407,6 +407,16 @@ var domUtils = (dom.domUtils = {
       ? node.parentNode.insertBefore(newNode, node.nextSibling)
       : node.parentNode.appendChild(newNode);
   },
+  /**
+     * 在节点node前面插入新节点newNode
+     * @method insertAfter
+     * @param { Node } node 目标节点
+     * @param { Node } newNode 新插入的节点， 该节点将置于目标节点之后
+     * @return { Node } 新插入的节点
+     */
+    insertBefore: function(node, newNode) {
+      return node.parentNode.insertBefore(newNode, node);
+    },
 
   /**
      * 删除节点node及其下属的所有节点

@@ -44,7 +44,7 @@ UEditor是由百度web前端研发部开发所见即所得富文本web编辑器�
 </body>
 </html>
 ```
-
+# 本地调试：grunt connect
 ### 1.3 在浏览器打开demo.html
 
 如果看到了下面这样的编辑器，恭喜你，初次部署成功！

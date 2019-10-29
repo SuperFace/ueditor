@@ -372,114 +372,161 @@ UE.plugins["font"] = function() {
     (function(cmd, style) {
       UE.commands[cmd] = {
         execCommand: function(cmdName, value) {
-          value =
-            value ||
-            (this.queryCommandState(cmdName)
-              ? "none"
-              : cmdName == "underline"
-                ? "underline"
-                : cmdName == "fontborder" ? "1px solid #000" : "line-through");
-          var me = this,
-            range = this.selection.getRange(),
-            text;
+          var me = this;
+          //填空题
+          var focusStartNode = me.selection.getStart(); 
+          var range = me.selection.getRange();
+          var _startContainer = range.startContainer, 
+              _endContainer = range.endContainer;
+          var isOnlyBlank = false,hasLeftBlank = false, hasRightBlank = false;
 
-          if (value == "default") {
-            if (range.collapsed) {
-              text = me.document.createTextNode("font");
-              range.insertNode(text).select();
-            }
-            me.execCommand("removeFormat", "span,a", style);
-            if (text) {
-              range.setStartBefore(text).collapse(true);
-              domUtils.remove(text);
-            }
-            mergesibling(range, cmdName, value);
-            range.select();
-          } else {
-            if (!range.collapsed) {
-              if (needCmd[cmd] && me.queryCommandValue(cmd)) {
-                me.execCommand("removeFormat", "span,a", style);
+          if(_startContainer.nodeType==3 && domUtils.hasClass(_startContainer.parentNode, "blank-item")){
+            range.setStartBefore(_startContainer.parentNode);
+            hasLeftBlank = true;
+          }
+          if(_endContainer.nodeType==3 && domUtils.hasClass(_endContainer.parentNode, "blank-item")){
+            range.setEndAfter(_endContainer.parentNode);
+            hasRightBlank = true;
+          }
+          if(focusStartNode.nodeType==1 && domUtils.hasClass(focusStartNode, "blank-item") 
+              && _startContainer.nodeType==3 && domUtils.hasClass(_startContainer.parentNode, "blank-item") 
+              && _endContainer.nodeType==3 && domUtils.hasClass(_endContainer.parentNode, "blank-item") 
+              && _startContainer == _endContainer 
+              || (focusStartNode.nodeType==1 && domUtils.hasClass(focusStartNode, "blank-item") 
+                  && _startContainer == _endContainer 
+                  && focusStartNode == _startContainer)){
+                isOnlyBlank = true;
+          }
+          setTimeout(function(){
+            value =
+              value ||
+              (this.queryCommandState(cmdName)
+                ? "none"
+                : cmdName == "underline"
+                  ? "underline"
+                  : cmdName == "fontborder" ? "1px solid #000" : "line-through");
+            var text;
+            range = this.selection.getRange();
+            if (value == "default") {
+              if (range.collapsed) {
+                text = me.document.createTextNode("font");
+                range.insertNode(text).select();
               }
-              range = me.selection.getRange();
-
-              range.applyInlineStyle("span", { style: style + ":" + value });
+              me.execCommand("removeFormat", "span,a", style);
+              if (text) {
+                range.setStartBefore(text).collapse(true);
+                domUtils.remove(text);
+              }
               mergesibling(range, cmdName, value);
               range.select();
             } else {
-              var span = domUtils.findParentByTagName(
-                range.startContainer,
-                "span",
-                true
-              );
-              text = me.document.createTextNode("font");
-              if (
-                span &&
-                !span.children.length &&
-                !span[browser.ie ? "innerText" : "textContent"].replace(
-                  fillCharReg,
-                  ""
-                ).length
-              ) {
-                //for ie hack when enter
-                range.insertNode(text);
-                if (needCmd[cmd]) {
-                  range.selectNode(text).select();
-                  me.execCommand("removeFormat", "span,a", style, null);
-
-                  span = domUtils.findParentByTagName(text, "span", true);
-                  range.setStartBefore(text);
-                }
-                span && (span.style.cssText += ";" + style + ":" + value);
-                range.collapse(true).select();
-              } else {
-                range.insertNode(text);
-                range.selectNode(text).select();
-                span = range.document.createElement("span");
-
-                if (needCmd[cmd]) {
-                  //a标签内的不处理跳过
-                  if (domUtils.findParentByTagName(text, "a", true)) {
-                    range.setStartBefore(text).setCursor();
-                    domUtils.remove(text);
-                    return;
-                  }
+              if (!range.collapsed) {//非闭合选区
+                if (needCmd[cmd] && me.queryCommandValue(cmd)) {
                   me.execCommand("removeFormat", "span,a", style);
                 }
-
-                span.style.cssText = style + ":" + value;
-
-                text.parentNode.insertBefore(span, text);
-                //修复，span套span 但样式不继承的问题
-                if (!browser.ie || (browser.ie && browser.version == 9)) {
-                  var spanParent = span.parentNode;
-                  while (!domUtils.isBlockElm(spanParent)) {
-                    if (spanParent.tagName == "SPAN") {
-                      //opera合并style不会加入";"
-                      span.style.cssText =
-                        spanParent.style.cssText + ";" + span.style.cssText;
-                    }
-                    spanParent = spanParent.parentNode;
-                  }
+                range = me.selection.getRange();
+                var attrs = { style: style + ":" + value };
+                if(value == "none"){
+                  attrs = { style: style + ":" + value, "class": "ue-font" };
                 }
+                if(isOnlyBlank){
+                  attrs = { "style": style + ":" + value, "class": "blank-item" };
+                }
+                range.applyInlineStyle("span", attrs);
+                mergesibling(range, cmdName, value);
+                range.select();
+              } else {//闭合选区
+                var span = domUtils.findParentByTagName(
+                  range.startContainer,
+                  "span",
+                  true
+                );
+                if(value == "none"){
+                  domUtils.addClass(span, "ue-font");
+                }
+                text = me.document.createTextNode("font");
+                if (
+                  span &&
+                  !span.children.length &&
+                  !span[browser.ie ? "innerText" : "textContent"].replace(
+                    fillCharReg,
+                    ""
+                  ).length
+                ) {
+                  //for ie hack when enter
+                  range.insertNode(text);
+                  if (needCmd[cmd]) {
+                    range.selectNode(text).select();
+                    me.execCommand("removeFormat", "span,a", style, null);
 
-                if (opera) {
-                  setTimeout(function() {
+                    span = domUtils.findParentByTagName(text, "span", true);
+                    range.setStartBefore(text);
+                  }
+                  span && (span.style.cssText += ";" + style + ":" + value);
+                  range.collapse(true).select();
+                } else {
+                  range.insertNode(text);
+                  range.selectNode(text).select();
+                  span = range.document.createElement("span");
+
+                  if (needCmd[cmd]) {
+                    //a标签内的不处理跳过
+                    if (domUtils.findParentByTagName(text, "a", true)) {
+                      range.setStartBefore(text).setCursor();
+                      domUtils.remove(text);
+                      return;
+                    }
+                    me.execCommand("removeFormat", "span,a", style);
+                  }
+
+                  span.style.cssText = style + ":" + value;
+
+                  text.parentNode.insertBefore(span, text);
+                  //修复，span套span 但样式不继承的问题
+                  if (!browser.ie || (browser.ie && browser.version == 9)) {
+                    var spanParent = span.parentNode;
+                    while (!domUtils.isBlockElm(spanParent)) {
+                      if (spanParent.tagName == "SPAN") {
+                        //opera合并style不会加入";"
+                        span.style.cssText =
+                          spanParent.style.cssText + ";" + span.style.cssText;
+                      }
+                      spanParent = spanParent.parentNode;
+                    }
+                  }
+
+                  if (opera) {
+                    setTimeout(function() {
+                      range.setStart(span, 0).collapse(true);
+                      mergesibling(range, cmdName, value);
+                      range.select();
+                    });
+                  } else {
                     range.setStart(span, 0).collapse(true);
                     mergesibling(range, cmdName, value);
                     range.select();
-                  });
-                } else {
-                  range.setStart(span, 0).collapse(true);
-                  mergesibling(range, cmdName, value);
-                  range.select();
-                }
+                  }
 
-                //trace:981
-                //domUtils.mergeToParent(span)
+                  //trace:981
+                  //domUtils.mergeToParent(span)
+                }
+                domUtils.remove(text);
               }
-              domUtils.remove(text);
+              //删除产生的无用ue-font：
+              var _fontItem = this.body.getElementsByClassName("ue-font");
+              if(_fontItem.length > 0){
+                for(var n=0, l = _fontItem.length; n < l; n++){
+                  var item = _fontItem[n];
+                  if(item && domUtils.isEmptyNode(item)){//空
+                    domUtils.remove(item);
+                  }else if(item){
+                    domUtils.remove(item, true);//删除节点node，保留子节点
+                  }
+                }
+              }
             }
-          }
+            me.trigger("contentchange");
+          }.bind(me), 100);
           return true;
         },
         queryCommandValue: function(cmdName) {

@@ -38,6 +38,7 @@ UE.commands["inserthtml"] = {
       return;
     }
     range = me.selection.getRange();
+
     div = range.document.createElement("div");
     div.style.display = "inline";
 

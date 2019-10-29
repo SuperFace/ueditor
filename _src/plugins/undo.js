@@ -146,7 +146,7 @@ UE.plugins["undo"] = function() {
       var cont = root.toHtml();
       //trace:3461
       //这个会引起回退时导致空格丢失的情况
-      //            browser.ie && (cont = cont.replace(/>&nbsp;</g, '><').replace(/\s*</g, '<').replace(/>\s*/g, '>'));
+      //browser.ie && (cont = cont.replace(/>&nbsp;</g, '><').replace(/\s*</g, '<').replace(/>\s*/g, '>'));
       me.fireEvent("aftergetscene");
 
       return {
@@ -154,18 +154,22 @@ UE.plugins["undo"] = function() {
         content: cont
       };
     };
+    //safari浏览器下，中文输入法，第一次输入字符过程中不会触发由于keydown晚于compositionstart后触发，所以中文输入过程中save(true)不会触发,
+    //导致中文输入结束后触发两个save，一次：save（true），一次：save(false, true)，
+    //而且两个输入内容相同，导致第二次save，this.list数组中两项目内容相同，进一步不会触发contentchange、undo
     this.save = function(notCompareRange, notSetCursor) {
       clearTimeout(saveSceneTimer);
       var currentScene = this.getScene(notSetCursor),
         lastScene = this.list[this.index];
-
-      if (lastScene && lastScene.content != currentScene.content) {
+        //console.log(lastScene, currentScene);
+      if (lastScene && (lastScene.content != currentScene.content || (this.index ==0 && !/^<p><br\/><\/p>$/.test(lastScene.content)))) {
         me.trigger("contentchange");
       }
       //内容相同位置相同不存
       if (
         lastScene &&
-        lastScene.content == currentScene.content &&
+        lastScene.content == currentScene.content && !(this.index == 0 && !/^<p><br\/><\/p>$/.test(lastScene.content) && lastScene.content == currentScene.content )
+        &&
         (notCompareRange
           ? 1
           : compareRangeAddress(lastScene.address, currentScene.address))
@@ -238,10 +242,10 @@ UE.plugins["undo"] = function() {
     /*Shift*/ 16: 1,
     /*Ctrl*/ 17: 1,
     /*Alt*/ 18: 1,
-    37: 1,
-    38: 1,
-    39: 1,
-    40: 1
+    /*Left*/ 37: 1,
+    /*Up*/ 38: 1,
+    /*Right*/ 39: 1,
+    /*Down*/ 40: 1
   },
     keycont = 0,
     lastKeyCode;
@@ -261,19 +265,22 @@ UE.plugins["undo"] = function() {
     Redo: "ctrl+89" //redo
   });
   var isCollapsed = true;
+
   me.addListener("keydown", function(type, evt) {
     var me = this;
     var keyCode = evt.keyCode || evt.which;
-    if (
-      !keys[keyCode] &&
-      !evt.ctrlKey &&
-      !evt.metaKey &&
-      !evt.shiftKey &&
-      !evt.altKey
-    ) {
-      if (inputType) return;
-
-      if (!me.selection.getRange().collapsed) {
+    // if (
+    //   !keys[keyCode] &&
+    //   !evt.ctrlKey &&
+    //   !evt.metaKey &&
+    //   !evt.shiftKey &&
+    //   !evt.altKey
+    // ) {
+      //console.log(inputType);
+      if (inputType){
+        return;
+      }
+      if (!me.selection.getRange().collapsed) {//返回 true 表示Range 的起始位置和结束位置重合, false 表示不重合
         me.undoManger.save(false, true);
         isCollapsed = false;
         return;
@@ -304,23 +311,29 @@ UE.plugins["undo"] = function() {
       if (keycont >= maxInputCount) {
         save(me);
       }
-    }
+    //}
   });
   me.addListener("keyup", function(type, evt) {
+    var me = this;
+
+    if(me.mergeBlanktxtHandler) clearTimeout(me.mergeBlanktxtHandler);
+    var focusStartNode = me.selection.getStart();  
+    var childNodes = focusStartNode.childNodes;
+
     var keyCode = evt.keyCode || evt.which;
-    if (
-      !keys[keyCode] &&
-      !evt.ctrlKey &&
-      !evt.metaKey &&
-      !evt.shiftKey &&
-      !evt.altKey
-    ) {
+    // if (
+    //   !keys[keyCode] &&
+    //   !evt.ctrlKey &&
+    //   !evt.metaKey &&
+    //   !evt.shiftKey &&
+    //   !evt.altKey
+    // ) {
       if (inputType) return;
       if (!isCollapsed) {
         this.undoManger.save(false, true);
         isCollapsed = true;
       }
-    }
+    //}
   });
   //扩展实例，添加关闭和开启命令undo
   me.stopCmdUndo = function() {

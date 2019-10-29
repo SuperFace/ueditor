@@ -1415,7 +1415,6 @@
       }
       return this.moveToBookmark(bookmark);
     },
-
     /**
          * 移除当前选区内指定的inline标签，但保留其中的内容
          * @method removeInlineStyle

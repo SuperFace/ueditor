@@ -546,6 +546,89 @@ var utils = (UE.utils = {
   })(),
 
   /**
+     * 动态填充CSS、JS脚本到doc中,或者动态创建DOM用innerHTML插入html
+     * @method loadFile
+     * @param { DomDocument } document 需要加载资源文件的文档对象
+     * @param { Object } options 加载资源文件的属性集合， 取值请参考代码示例
+     * @example
+     * ```javascript、css、DOM element
+     *
+     * UE.utils.addDOMNode( document, {
+     *     scriptText: "console.log('999');",
+     *     tag:"script",
+     *     type:"text/javascript"
+     * } );
+     * 
+     * UE.utils.addDOMNode( document, {
+     *     innerHTML: "<span>xxx</span>",
+     *     tag:"div"
+     * } );
+     *
+     * ```
+     */
+  addDOMNode: (function() {
+    var tmpList = [];
+
+    function getItem(doc, obj) {
+      try {
+        for (var i = 0, ci; (ci = tmpList[i++]); ) {
+          if (ci.doc === doc && ci.tag === obj.tag && (ci.scriptText === (obj.scriptText || obj.text) || ci.innerHTML === obj.innerHTML)) {
+            return ci;
+          }
+        }
+      } catch (e) {
+        return null;
+      }
+    }
+
+    return function(doc, obj) {
+        var item = getItem(doc, obj);
+        if (item) {
+          return;
+        }
+        var _temp = {
+          doc: doc,
+          tag: obj.tag,
+          scriptText: obj.scriptText || obj.text
+        };
+        if("scriptText" in obj || "text" in obj) _temp.scriptText = obj.scriptText || obj.text;
+        if("innerHTML" in obj) _temp.innerHTML = obj.innerHTML; 
+        tmpList.push(_temp);
+
+        if (!doc.body) {
+          var html = [];
+          for (var p in obj) {
+            if (p == "tag" || p == ("scriptText" || "text") || p == "innerHTML") continue;
+            html.push(p + '="' + obj[p] + '"');
+          }
+          doc.write(
+            "<" + obj.tag + " " + html.join(" ") + " >" + obj.scriptText || obj.text || obj.innerHTML + "</" + obj.tag + ">"
+          );
+          return;
+        }
+        if (obj.id && doc.getElementById(obj.id)) {
+          return;
+        }
+        var element = doc.createElement(obj.tag);
+        for (var p in obj) {
+          if (p == "tag" || p == ("scriptText" || "text") || p == "innerHTML") continue;
+          element.setAttribute(p, obj[p]);
+        }
+        if("scriptText" in obj || "text" in obj){
+          try{
+            element.appendChild(doc.createTextNode(obj.scriptText || obj.text));
+          }catch(ex){
+            element.text = doc.createTextNode(bj.scriptText || obj.text);
+          }
+        }
+        if("innerHTML" in obj){
+          element.innerHTML = obj.innerHTML;
+        }
+        doc.getElementsByTagName("head")[0].appendChild(element);
+    };
+  })(),
+
+  /**
      * 动态加载文件到doc中
      * @method loadFile
      * @param { DomDocument } document 需要加载资源文件的文档对象

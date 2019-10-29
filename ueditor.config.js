@@ -28,7 +28,10 @@
     UEDITOR_HOME_URL: URL,
 
     // 服务器统一请求接口路径
-    serverUrl: URL + "php/controller.php",
+    serverUrl: "server-url-data.json",
+    imageActionName: "uploadimage",
+    fileActionName: "uploadfile",
+    videoActionName: "uploadvideo",
 
     //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
     toolbars: [
@@ -129,6 +132,7 @@
         "|",
         "print",
         "preview",
+        "fillblank",
         "searchreplace",
         "drafts",
         "help"
@@ -203,7 +207,7 @@
     //,imagePopup:true      //图片操作的浮层开关，默认打开
 
     //,autoSyncData:true //自动同步编辑器要提交的数据
-    //,emotionLocalization:false //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
+    ,emotionLocalization:true //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
 
     //粘贴只保留标签，去除标签所有属性
     //,retainOnlyLabelPasted: false
@@ -267,7 +271,7 @@
     //    'square' : ''   //'■ 小方块'
     //}
     //,listDefaultPaddingLeft : '30'//默认的左边缩进的基数倍
-    //,listiconpath : 'http://bs.baidu.com/listicon/'//自定义标号的路径
+    ,listiconpath : URL+'themes/ueditor-list/' //'http://bs.baidu.com/listicon/'//自定义标号的路径
     //,maxListLevel : 3 //限制可以tab的级数, 设置-1为不限制
 
     //,autoTransWordToList:false  //禁止word中粘贴进来的列表自动变成列表标签
@@ -344,10 +348,10 @@
 
     //elementPathEnabled
     //是否启用元素路径，默认是显示
-    //,elementPathEnabled : true
+    ,elementPathEnabled : false
 
     //wordCount
-    //,wordCount:true          //是否开启字数统计
+    ,wordCount:true          //是否开启字数统计
     //,maximumWords:10000       //允许的最大字符数
     //字数统计提示，{#count}代表当前字数，{#leave}代表还可以输入多少字符数,留空支持多语言自动切换，否则按此配置显示
     //,wordCountMsg:''   //当前已输入 {#count} 个字符，您还可以输入{#leave} 个字符
