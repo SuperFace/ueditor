@@ -458,9 +458,14 @@ div.edui-box {
 	content: "\e600";
 }
 /**插入音乐**/
-.edui-gray .edui-for-insertmusic .edui-icon:before {
-	content: "\e600";
+.edui-gray .edui-toolbar .edui-for-insertmusic .edui-icon{
+    width: 25px;
+    height: 25px;
+    background-image: url(../images/music.png) !important;
+    background-size: 25px 25px;
+    background-position: center;
 }
+
 /**附件**/
 .edui-gray .edui-for-attachment .edui-icon:before {
 	content: "\e68a";

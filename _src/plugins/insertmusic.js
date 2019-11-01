@@ -39,16 +39,19 @@ UE.plugins["insertmusic"] = function() {
           var focusStartNode = me.selection.getStart(); 
           var _className = focusStartNode.getAttribute('class');
           if(_className && _className.indexOf("blank-item") != -1){//当前光标所在结点为填空元素
-            //创建填空结点
+            //创建音频节点
             var newAudio = doc.createElement("audio");
-            if(align == "left" || align == "right") floatStr = "display:block;float:" + align + ";";
-            if(align == "center") floatStr = "display:block;margin:10px auto;";
+            floatStr = "margin:10px;width:"+(vi.width || 258)+"px;height:"+(vi.height || 48)+"px;";
+            if(align == "left" || align == "right") floatStr += "display:block;float:" + align + ";";
+            if(align == "center") floatStr += "display:block;margin:10px auto;";
             domUtils.setAttributes(newAudio, {
               url: url,
               class: cl,
               style: "position:relative;outline:none;" + floatStr,
               width: vi.width || 258,
-              height: vi.height || 48
+              height: vi.height || 48,
+              controlsList: "nodownload", 
+              oncontextmenu: "return false"
             });
             // var pCenter = null;
             // if(align == "center"){
@@ -76,6 +79,7 @@ UE.plugins["insertmusic"] = function() {
                 //   domUtils.insertAfter(focusStartNode, newAudio);
                 // }
                 domUtils.insertAfter(focusStartNode, newAudio);
+                me.selection.getRange().setStartAfter(newAudio).collapse(true).select(true);
               }
             }else{//非闭合选区
               if(_startContainer==_endContainer 
@@ -87,15 +91,17 @@ UE.plugins["insertmusic"] = function() {
                 //   domUtils.insertAfter(_startContainer.parentNode, newAudio);
                 // }
                 domUtils.insertAfter(_startContainer.parentNode, newAudio);
+                me.selection.getRange().setStartAfter(newAudio).collapse(true).select(true);
               }else{
                 html = '';
                 //if(align == "center") html += '<p style="text-align:center;">';
-                if(align == "left" || align == "right") floatStr = 'display:block;float:' + align + ';';
-                if(align == "center") floatStr = "display:block;margin:10px auto;";
-                html += '<audio class="' + cl + '" controls="controls" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
+                floatStr = "margin: 10px;width:"+(vi.width || 258)+"px;height:"+(vi.height || 48)+"px;";
+                if(align == "left" || align == "right") floatStr += 'display:block;float:' + align + ';';
+                if(align == "center") floatStr += "display:block;margin:10px auto;";
+                html += '<audio class="' + cl + '" controls="controls" controlsList="nodownload" oncontextmenu="return false" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
                 (url ? 'src="' + url + '" style="position:relative;outline:none;' + floatStr + '"'
                 : 'style="position:relative;outline:none;opacity:0.5;'  + floatStr  + '"')
-                + '></audio> ';
+                + '></audio>';
                 //if(align == "center") html += '</p>';
                 this.execCommand("inserthtml", html);
               }
@@ -103,12 +109,13 @@ UE.plugins["insertmusic"] = function() {
           }else{//当前光标所在结点为非填空元素
             html = '';
             //if(align == "center") html += '<p style="text-align:center;">';
-            if(align == "left" || align == "right") floatStr = 'display:block;float:' + align + ';';
-            if(align == "center") floatStr = "display:block;margin:10px auto;";
-            html += '<audio class="' + cl + '" controls="controls" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
+            floatStr = "margin: 10px;width:"+(vi.width || 258)+"px;height:"+(vi.height || 48)+"px;";
+            if(align == "left" || align == "right") floatStr += 'display:block;float:' + align + ';';
+            if(align == "center") floatStr += "display:block;margin:10px auto;";
+            html += '<audio class="' + cl + '" controls="controls" controlsList="nodownload" oncontextmenu="return false" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
             (url ? 'src="' + url + '" style="position:relative;outline:none;' + floatStr + '"'
             : 'style="position:relative;outline:none;opacity:0.5;'  + floatStr  + '"')
-            + '></audio> ';
+            + '></audio>';
             //if(align == "center") html += '</p>';
             this.execCommand("inserthtml", html);
           }

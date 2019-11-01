@@ -345,6 +345,7 @@
                 var _music1 = selectYanPanMusicObj[id];
                 musicObjs.push({
                     id: _music1.id,
+                    //url: "https://yunpanx.bj.bcebos.com/v1/encodetest/Kalimba%20-%20%E5%89%AF%E6%9C%AC.mp3",
                     url: _music1.url,
                     name: _music1.name,
                     size: _music1.size,
