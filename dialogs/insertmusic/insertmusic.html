@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" src="../internal.js"></script>
+    <link rel="stylesheet" type="text/css" href="insertmusic.css" />
+</head>
+<body>
+<div class="wrapper">
+    <div id="musicTab">
+        <div id="tabHeads" class="tabhead">
+            <span tabSrc="upload" class="focus" data-content-id="upload"><var id="lang_tab_uploadM"></var></span>
+            <span tabSrc="yunpan" data-content-id="yunpan"><var id="lang_tab_yunpanM"></var></span>
+        </div>
+        <div id="tabBodys" class="tabbody">
+            <div id="upload" class="panel focus">
+                <div class="upload_left">
+                    <div id="queueList" class="queueList">
+                        <div class="statusBar element-invisible">
+                            <div class="progress">
+                                <span class="text">0%</span>
+                                <span class="percentage"></span>
+                            </div><div class="info"></div>
+                            <div class="btns">
+                                <div id="filePickerBtn"></div>
+                                <div class="uploadBtn"><var id="lang_start_upload"></var></div>
+                            </div>
+                        </div>
+                        <div id="dndArea" class="placeholder">
+                            <div class="filePickerContainer">
+                                <div id="filePickerReady"></div>
+                            </div>
+                        </div>
+                        <ul class="filelist element-invisible">
+                            <li id="filePickerBlock" class="filePickerBlock"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="uploadMusicInfo">
+                    <fieldset>
+                        <legend><var id="lang_upload_size"></var></legend>
+                        <table>
+                            <tr><td><label><var id="lang_upload_width"></var></label></td><td><input class="txt" id="upload_width" value="258" type="text"/></td></tr>
+                            <tr><td><label><var id="lang_upload_height"></var></label></td><td><input class="txt" id="upload_height" value="48" type="text"/></td></tr>
+                        </table>
+                    </fieldset>
+                    <fieldset>
+                        <legend><var id="lang_upload_alignment"></var></legend>
+                        <div id="upload_alignment"></div>
+                    </fieldset>
+                </div>
+            </div>
+            <div id="yunpan" class="panel">
+                <div class="upload_left">
+                    <div class="statusBar">
+                        <div class="yunpan-info" id="yunpan-info">已经选中0个音频</div>
+                        <div class="search-box">
+                            <input type="text" value="" placeholder="搜索音频" class="serach-input" id="search-input" />
+                            <i class="search-btn" id="search-btn"></i>
+                        </div>
+                    </div>
+                    <div class="yunpan-placeholder" id="yunpan-placeholder"></div>
+                    <div class="loading-wrapper" id="loading-wrapper">
+                        <div class="typing_loader"></div>
+                    </div>
+                    <div class="filelist-box" id="filelist-box">
+                        <ul class="filelist" id="yunpan-filelist">
+                            <li class="block" durl="xxxxx" dname="xxxxxx.mp3" dsize="ssss" id="ssss" dtime="">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                                <span class="edui-checkbox is-checked">
+                                    <span class="edui-checkbox_inner"></span>
+                                    <input type="checkbox" class="edui-checkbox_original" />
+                                </span>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                                <span class="edui-checkbox">
+                                    <span class="edui-checkbox_inner"></span>
+                                    <input type="checkbox" class="edui-checkbox_original" />
+                                </span>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                                <span class="edui-checkbox">
+                                    <span class="edui-checkbox_inner"></span>
+                                    <input type="checkbox" class="edui-checkbox_original" />
+                                </span>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                            <li class="block">
+                                <p class="title">xxxxxx.mp3</p>
+                                <p class="imgWrap notimage">
+                                    <i class="file-preview file-type-mp3"></i>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="musicInfo">
+                    <fieldset>
+                        <legend><var id="lang_music_size"></var></legend>
+                        <table>
+                            <tr><td><label for="musicWidth"><var id="lang_musicW"></var></label></td><td><input class="txt" id="musicWidth" value="258" type="text"/></td></tr>
+                            <tr><td><label for="musicHeight"><var id="lang_musicH"></var></label></td><td><input class="txt" id="musicHeight" value="48" type="text"/></td></tr>
+                        </table>
+                    </fieldset>
+                    <fieldset>
+                        <legend><var id="lang_alignment"></var></legend>
+                        <div id="musicFloat"></div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jquery -->
+<script type="text/javascript" src="../../third-party/jquery-1.10.2.min.js"></script>
+
+<!-- webuploader -->
+<script type="text/javascript" src="../../third-party/webuploader/webuploader.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../../third-party/webuploader/webuploader.css">
+
+<!-- insertmusic -->
+<script type="text/javascript" src="insertmusic.js"></script>
+</body>
+</html>

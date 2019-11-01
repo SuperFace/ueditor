@@ -67,6 +67,7 @@
             'plugins/autoheight.js',
             'plugins/autofloat.js',
             'plugins/video.js',
+            'plugins/insertmusic.js',
             'plugins/table.core.js',
             'plugins/table.cmds.js',
             'plugins/table.action.js',

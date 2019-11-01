@@ -457,6 +457,10 @@ div.edui-box {
 .edui-gray .edui-for-music .edui-icon:before {
 	content: "\e600";
 }
+/**插入音乐**/
+.edui-gray .edui-for-insertmusic .edui-icon:before {
+	content: "\e600";
+}
 /**附件**/
 .edui-gray .edui-for-attachment .edui-icon:before {
 	content: "\e68a";
@@ -1177,6 +1181,15 @@ div.edui-box {
 /*video-dialog*/
 
 .edui-gray .edui-for-insertvideo .edui-dialog-content {
+    width: 590px;
+    height: 390px;
+}
+
+
+
+/*insertmusic-dialog*/
+
+.edui-gray .edui-for-insertmusic .edui-dialog-content {
     width: 590px;
     height: 390px;
 }

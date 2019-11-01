@@ -244,6 +244,12 @@
     height: 390px;
 }
 
+/*insertmusic-dialog*/
+.edui-default .edui-for-insertmusic .edui-dialog-content {
+    width: 590px;
+    height: 390px;
+}
+
 /*anchor-dialog*/
 .edui-default .edui-for-anchor .edui-dialog-content {
     width: 320px;

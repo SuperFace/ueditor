@@ -404,6 +404,46 @@ var utils = (UE.utils = {
     return str.replace(/(^[ \t\n\r]+)|([ \t\n\r]+$)/g, "");
   },
 
+  
+  getCookie: function(key, isJSON){
+    var converter = function(){};
+    if (typeof document === 'undefined') {
+      return;
+    }
+    var jar = {};
+    // To prevent the for loop in the first place assign an empty array
+    // in case there are no cookies at all.
+    var cookies = document.cookie ? document.cookie.split('; ') : [];
+    var i = 0;
+
+    for (; i < cookies.length; i++) {
+      var parts = cookies[i].split('=');
+      var cookie = parts.slice(1).join('=');
+
+      if (!isJSON && cookie.charAt(0) === '"') {
+        cookie = cookie.slice(1, -1);
+      }
+
+      try {
+        var name = parts[0].replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+        cookie = (converter.read || converter)(cookie, name) || cookie.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+        if (isJSON) {
+          try {
+            cookie = JSON.parse(cookie);
+          } catch (e) {}
+        }
+
+        jar[name] = cookie;
+
+        if (key === name) {
+          break;
+        }
+      } catch (e) {}
+    }
+
+    return key ? jar[key] : jar;
+  },
+
   /**
      * 将字符串str以','分隔成数组后，将该数组转换成哈希对象， 其生成的hash对象的key为数组中的元素， value为1
      * @method listToMap
