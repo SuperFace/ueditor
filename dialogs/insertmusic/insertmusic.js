@@ -269,8 +269,8 @@
             if(!!searchVal){
                 setYunPanListState(true);
                 $.ajax({
-                    //url: "/api/open/yunpan/file/search?role=" + userRole + "&file_type=2&search=" + encodeURIComponent(searchVal),
-                    url: "http://apimock.xuetangx.com/mock/131/api/open/yunpan/file/search",
+                    url: "/api/open/yunpan/file/search?role=" + userRole + "&file_type=2&search=" + encodeURIComponent(searchVal),
+                    //url: "http://apimock.xuetangx.com/mock/131/api/open/yunpan/file/search",
                     type: "GET",
                     beforeSend: function(xhr){
                         xhr.setRequestHeader('Content-Type', 'application/json');
