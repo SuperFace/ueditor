@@ -569,11 +569,11 @@ var utils = (UE.utils = {
      */
   cssStyleToDomStyle: (function() {
     var test = document.createElement("div").style,
-      cache = {
-        float: test.cssFloat != undefined
+    cache = {
+      float: test.cssFloat != undefined
           ? "cssFloat"
           : test.styleFloat != undefined ? "styleFloat" : "float"
-      };
+    };
 
     return function(cssName) {
       return (

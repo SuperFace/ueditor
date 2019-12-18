@@ -14,15 +14,16 @@
         isModifyYunPanMusic = false,
         userRole = null, //请求云盘需要用户身份：(0, u"学校校长"), (1, u"学院主任"), (2, u"老师"), (-2, u"视频管理员")
         universityId = null,//请求云盘需要学校id
+        yunpanServerUrl = editor.getOpt('yunpanServerUrl') || "",//云盘列表接口
         uploadFile;
 
     window.onload = function(){
-        userRole = utils.getCookie('user_role') || null;
-        universityId = utils.getCookie('university_id') || null;
+        userRole = utils.getCookie('user_role') || 0;
+        universityId = utils.getCookie('university_id') || 122;
         $(document).on('ajaxSend', function (event, xhr, settings) {
             // 在发送请求之前做些什么
-            if(settings.url.indexOf("/api/open/yunpan/file/search") != -1){
-                
+            if(settings.url.indexOf(yunpanServerUrl) != -1){
+               
             }
         });
 
@@ -43,7 +44,8 @@
                         domUtils.addClass(tabs[j], 'focus');
                         domUtils.addClass($G(bodyId), 'focus');
                         if(bodyId == "yunpan"){
-                            $focus($G("search-input"));
+                            //$focus($G("search-input"));
+                            fetchYunPanList(true);
                         }
                     }else {
                         domUtils.removeClasses(tabs[j], 'focus');
@@ -65,7 +67,8 @@
                 domUtils.addClass(tabs[i], 'focus');
                 domUtils.addClass($G(bodyId), 'focus');
                 if(bodyId == "yunpan"){
-                    $focus($G("search-input"));
+                    //$focus($G("search-input"));
+                    fetchYunPanList(true);
                 }
             }
         }
@@ -75,7 +78,7 @@
     function initMusic(){
         createAlignButton( ["musicFloat", "upload_alignment"] );
         addOkListener();
-        addSearchListener();
+        //addSearchListener();
 
         //编辑视频时初始化相关信息
         (function(){
@@ -146,10 +149,10 @@
             $G('yunpan-placeholder').style.display = "none";
             $G('loading-wrapper').style.display = "block";
         }
-        updateYunPanInfo();
+        updateYunPanInfo();//更新选中个数
     }
 
-    //显示搜索出来的音频
+    //显示搜索出来的音频列表
     function showSearchYanPanList(data){
         var sourceFileList = "data" in data && !!data.data && "files" in data.data && utils.isArray(data.data.files) ? data.data.files : [];
         if(sourceFileList.length > 0 || selectYanPanMusicList.length > 0){
@@ -234,18 +237,58 @@
                 var id = $(this).attr("id");
                 var durl = $(this).attr("durl");
                 var dname = $(this).attr("dname");
-                var dsize = $(this).attr("dsize");
                 var dtime = $(this).attr("dtime");
                 selectYanPanMusicList.push(id);
                 selectYanPanMusicObj[id] = {
                     id: id,
                     url: durl,
                     name: dname,
-                    size: dsize,
                     update_time: dtime
                 };
                 updateYunPanInfo();
                 $(this).find(".edui-checkbox").addClass("is-checked");
+            }
+        });
+    }
+
+    //为云盘音频列表添加事件
+    
+    function addYunPanTreeMusicListener(){
+
+        $(".folder-closeopen").off("click").on("click", function(e){
+            var _folder = $(this).parent().parent();
+            var folderId = _folder.attr("did");
+            if($(this).hasClass("folder-close")){
+                $(this).removeClass("folder-close").addClass("folder-open");
+                _folder.children(".box-content").removeClass("show");
+            }else{
+                $(this).removeClass("folder-open").addClass("folder-close");
+                _folder.children(".box-content").addClass("show");
+                fetchFolderTreeList(folderId, _folder);
+            }
+        });
+        
+        $(".tree-box.file.music").off("click").on("click", function(e){
+            if($(this).hasClass("is-checked")){
+                var id = $(this).attr("did");
+                utils.removeItem(selectYanPanMusicList, id);
+                delete selectYanPanMusicObj[id];
+                updateYunPanInfo();
+                $(this).removeClass("is-checked");
+            }else{
+                var id = $(this).attr("did");
+                var durl = $(this).attr("durl");
+                var dname = $(this).attr("dname");
+                var dtime = $(this).attr("dtime");
+                selectYanPanMusicList.push(id);
+                selectYanPanMusicObj[id] = {
+                    id: id,
+                    url: durl,
+                    name: dname,
+                    update_time: dtime
+                };
+                updateYunPanInfo();
+                $(this).addClass("is-checked");
             }
         });
     }
@@ -256,6 +299,84 @@
         $G('yunpan-info').innerHTML = '已经选中'+num+'个音频';
     }
 
+    function fetchFolderTreeList(folderId, folderDOM){
+        if(folderId){
+            if(folderDOM.children(".box-content").attr("status") != "loaded"){
+                fetchYunPanList(false, folderId, folderDOM);
+            } 
+        }
+    }
+
+    //显示云盘树结构：
+    function showYanPanTreeList(init, folderDOM, data){
+        var treeList = data && "data" in data && toString.call(data.data) == "[object Array]" ? data.data : [];
+        if(treeList.length){
+            var treeHTML = '<div class="box-content show" status="loaded">';
+            if(init) treeHTML = '<li class="tree-root"><div class="tree-box root folder" did="0"><div class="header"><i class="folder-closeopen folder-close"></i><i class="folder-icon"></i><span class="file-name">全部文件</span></div><div class="box-content show" status="loaded">';
+            for(var i=0; i<treeList.length; i++){
+                var _file = treeList[i];
+                var fileType = _file.file_type;//0-文件夹、1-视频、2-音频、3-文档
+                var fileName = _file.name;
+                var fileId = _file.id;
+                var fileLink = _file.file_value;
+                var update_time = _file.update_time;
+                
+                
+                if(fileType == 0){//文件夹
+                    treeHTML += '<div class="tree-box folder" dtime="'+update_time+'" dname="'+fileName+'" did="'+fileId+'"><div class="header"><i class="folder-closeopen folder-open"></i><i class="folder-icon"></i><span class="file-name">'+fileName+'</span></div><div class="box-content">'
+                             + '<div class="tree-box loading show"><div class="header"><div class="typing_loader"></div></div></div>'
+                             +'</div></div>';
+                }else if(fileType == 1){//视频
+                    treeHTML += '<div class="tree-box file no-music" durl="'+fileLink+'" dtime="'+update_time+'" dname="'+fileName+'" did="'+fileId+'"><div class="header"><i class="file-icon video"></i><span class="file-name">'+fileName+'</span></div></div>';
+                }else if(fileType == 2){//音频
+                    treeHTML += '<div class="tree-box file music" durl="'+fileLink+'" dtime="'+update_time+'" dname="'+fileName+'" did="'+fileId+'"><div class="header"><i class="file-icon music"></i><span class="file-name">'+fileName+'</span></div></div>';
+                }else if(fileType == 3){//文档
+                    treeHTML += '<div class="tree-box file no-music" durl="'+fileLink+'" dtime="'+update_time+'" dname="'+fileName+'" did="'+fileId+'"><div class="header"><i class="file-icon txt"></i><span class="file-name">'+fileName+'</span></div></div>';
+                }
+            }
+            if(init){
+                treeHTML += '</div></li>';
+                $G('yunpan-filelist').innerHTML = treeHTML;
+                $G('filelist-box').style.display = "block";
+                $G('yunpan-placeholder').style.display = "none";
+                $G('loading-wrapper').style.display = "none";
+            }else{
+                treeHTML += '</div>';
+                folderDOM.children(".box-content").remove();
+                $(treeHTML).appendTo(folderDOM);
+            }
+            addYunPanTreeMusicListener();
+        }else{
+            if(init) setYunPanListState(false);//loading
+            else folderDOM.children(".box-content").innerHTML = '<div class="tree-box error"><div class="header">空</div></div>';
+        }
+    }
+
+    //加载云盘列表初始化、加载数据
+    function fetchYunPanList(init, folderId, folderDOM){//init-初始化
+        if(init) setYunPanListState(true);//loading
+        if(userRole == 0 || userRole == 1 || userRole == 2 || userRole == -2){
+            var current_location = folderId || 0;
+            $.ajax({
+                url: yunpanServerUrl + "?role=" + userRole + "&file_type=-1&current_location=" + current_location,
+                type: "GET",
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.setRequestHeader('UNIVERSITY-ID', universityId);
+                },
+                dataType: "json",
+                success: function(data){
+                    showYanPanTreeList(init, folderDOM, data);
+                },
+                error: function(xhr, err, e){
+                    showYanPanTreeList(init, folderDOM, null);
+                }
+            });
+        }else{
+            if(init) setYunPanListState(false);//loading
+            else folderDOM.children(".box-content").innerHTML = '<div class="tree-box error"><div class="header">空</div></div>';
+        }
+    }
 
     /**
      * 初始化云盘搜索
@@ -269,8 +390,8 @@
             if(!!searchVal){
                 setYunPanListState(true);
                 $.ajax({
-                    url: "/api/open/yunpan/file/search?role=" + userRole + "&file_type=2&search=" + encodeURIComponent(searchVal),
-                    //url: "http://apimock.xuetangx.com/mock/131/api/open/yunpan/file/search",
+                    url: "http://apimock.xuetangx.com/mock/131/api/open/yunpan/file/search?role=" + userRole + "&file_type=2&search=" + encodeURIComponent(searchVal),
+                    url: yunpanServerUrl + "?role=" + userRole + "&file_type=2&current_location=0",
                     type: "GET",
                     beforeSend: function(xhr){
                         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -314,7 +435,7 @@
     }
 
     /**
-     * 将单个视频信息插入编辑器中
+     * 将单个音频信息插入编辑器中
      */
     function insertSingle(){
         var width = $G("musicWidth"),
@@ -348,7 +469,6 @@
                     //url: "https://yunpanx.bj.bcebos.com/v1/encodetest/Kalimba%20-%20%E5%89%AF%E6%9C%AC.mp3",
                     url: _music1.url,
                     name: _music1.name,
-                    size: _music1.size,
                     update_time: _music1.update_time,
                     width: width,
                     height: height,
@@ -508,7 +628,7 @@
     }
 
 
-    /* 插入上传视频 */
+    /* 插入上传音频 */
     function insertUpload(){
         var musicObjs=[],
             uploadDir = editor.getOpt('videoUrlPrefix'),
@@ -605,7 +725,6 @@
                 actionUrl = editor.getActionUrl(editor.getOpt('musicActionName')),
                 fileMaxSize = editor.getOpt('videoMaxSize'),
                 acceptExtensions = ([".ogg", ".mp3", ".wav"]).join('').replace(/\./g, ',').replace(/^[,]/, '');
-
             if (!WebUploader.Uploader.support()) {
                 $('#filePickerReady').after($('<div>').html(lang.errorNotSupport)).hide();
                 return;

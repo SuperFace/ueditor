@@ -136,7 +136,8 @@ span.view{display: inline-block;width: 30px;float: right;cursor: pointer;color: 
     text-align: center;
     width: 97%;
     float: left;
-    background: url(./images/image.png) center 70px no-repeat;
+    background: url(./images/music-icon.png) center 70px no-repeat;
+    background-size:70px;
     color: #cccccc;
     font-size: 18px;
     position: relative;
@@ -284,6 +285,8 @@ span.view{display: inline-block;width: 30px;float: right;cursor: pointer;color: 
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    list-style: none;
+    outline: none;
 }
 #upload .filelist:after, #yunpan .filelist-box:after, #yunpan .filelist:after {
     content: '';
@@ -526,6 +529,239 @@ span.view{display: inline-block;width: 30px;float: right;cursor: pointer;color: 
     background: none;
     font-size: 0;
 }
+.filelist li.tree-root{
+    width: 100%;
+    min-height: 40px;
+    background: #fff;
+    text-align: left;
+    margin: 0px 0 0 0px;
+    *margin: 0px 0 0 0px;
+    padding-left: 0px;
+    position: relative;
+    display: block;
+    float: none;
+    overflow: hidden;
+    font-size: 14px;
+    color:#000;
+    border-radius: 0px;
+}
+.filelist li.tree-root .tree-box{
+    width: 100%;
+    min-height: 40px;
+    background: #fff;
+    text-align: left;
+    margin: 0px 0 0 0px;
+    *margin: 0px 0 0 0px;
+    padding-left: 28px;
+    position: relative;
+    display: block;
+    float: none;
+    overflow: hidden;
+    font-size: 14px;
+    color:#000;
+    border-radius: 0px;
+}
+.filelist li.tree-root .tree-box.root{
+    width: 100%;
+    min-height: 40px;
+    background: #fff;
+    text-align: left;
+    margin: 0px 0 0 0px;
+    *margin: 0px 0 0 0px;
+    padding-left: 0px;
+    position: relative;
+    display: block;
+    float: none;
+    overflow: hidden;
+    font-size: 14px;
+    color:#000;
+    border-radius: 0px;
+}
+.filelist li.tree-root .tree-box.file{
+    padding-left: 55px;
+}
+li.tree-root .tree-box .header{
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    margin: 0px 0 0 0px;
+    *margin: 0px 0 0 0px;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    font-size: 14px;
+    color:#000;
+    border-radius: 0px;
+    z-index: 1;
+}
+li.tree-root .tree-box.loading{
+    display: none;
+}
+li.tree-root .tree-box.loading .header{
+    padding-top:17px;
+}
+li.tree-root .tree-box.loading .header .typing_loader{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    -webkit-animation: typing 1s linear infinite alternate;
+       -moz-animation: Typing 1s linear infinite alternate;
+            animation: typing 1s linear infinite alternate;
+    margin: 0px auto; /* Not necessary- its only for layouting*/  
+    position: relative;
+    left: -12px;
+}
+li.tree-root .tree-box.error{
+    text-align:center;
+}
+li.tree-root .tree-box.error .header{
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    margin: 0px 0 0 0px;
+    *margin: 0px 0 0 0px;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    font-size: 12px;
+    color:rgba(179,196,210, 1);
+    border-radius: 0px;
+    z-index: 1;
+}
+.tree-box.folder .header i.folder-close, .tree-box.folder .header i.folder-open{
+    position: absolute;
+    display:block;
+    left:0;
+    top:0;
+    width:32px;
+    height:40px;
+    cursor: pointer;
+    z-index:2;
+}
+.tree-box.folder .header i.folder-close{
+    background:url(./images/close-folder-icon16.png) center center no-repeat;
+    background-size:16px 16px;
+}
+.tree-box.folder .header i.folder-open{
+    background:url(./images/open-folder-icon16.png) center center no-repeat;
+    background-size:16px 16px;
+}
+.tree-box.folder .header i.folder-icon{
+    position:absolute;
+    display:block;
+    left:32px;
+    top:0;
+    width:35px;
+    height:40px;
+    background:url(./images/folder-icon30.png) left center no-repeat;
+    background-size:30px auto;
+    z-index: 1;
+}
+.tree-box.file{
+    cursor: pointer;
+}
+.tree-box.file .header i.file-icon{
+    position:absolute;
+    display:block;
+    top:0;
+    left:0;
+    width:30px;
+    height:40px;
+    
+}
+.tree-box.file .header i.file-icon.music{
+    background:url(./images/music-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.video{
+    background:url(./images/video-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.pdf{
+    background:url(./images/pdf-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.doc{
+    background:url(./images/word-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.image{
+    background:url(./images/image-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.ppt{
+    background:url(./images/ppt-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.xlxs{
+    background:url(./images/xlxs-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.zip{
+    background:url(./images/zip-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box.file .header i.file-icon.txt{
+    background:url(./images/txt-icon14x18.png) center center no-repeat;
+    background-size:14px 18px;
+}
+.tree-box .header .file-name{
+    position: relative;
+    display: block;
+    width:100%;
+    height:40px;
+    line-height:40px;
+    font-size: 14px;
+    color:#000;
+    text-align:left;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    z-index: 1;
+}
+.tree-box.folder .file-name{
+    padding-left:67px;
+}
+.tree-box.file .file-name{
+    padding-left:30px;
+}
+.tree-box .header:after{
+    position: relative;
+    width:0;
+    height:0;
+    content: '';
+    display: block;
+    clear:both;
+    zoom:-1;
+}
+.tree-box.file.is-checked .header .file-name{
+    color:#a27dff;
+}
+.tree-box.file.no-music{
+    opacity:0.3;
+    cursor: default;
+}
+li.tree-root .tree-box.folder .box-content{
+    width: 100%;
+    min-height: 40px;
+    text-align: left;
+    margin: 0px 0 0 0px;
+    *margin: 0px 0 0 0px;
+    position: relative;
+    display: none;
+    overflow: hidden;
+    font-size: 14px;
+    color:#000;
+    border-radius: 0px;
+}
+li.tree-root .tree-box .box-content.show{
+    display: block;
+}
+li.tree-root .tree-box.loading.show{
+    display: block;
+}
+
+
 
 #upload .filelist div.file-panel {
     position: absolute;
@@ -696,7 +932,8 @@ input::-ms-clear{
     border: 2px dashed #e6e6e6;
     height: 265px;
     text-align: center;
-    background: url(./images/image.png) center center no-repeat;
+    background: url(./images/music-icon.png) center center no-repeat;
+    background-size:70px;
     position: relative;
 }
 #filePickerBtn {

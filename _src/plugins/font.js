@@ -407,6 +407,7 @@ UE.plugins["font"] = function() {
                   : cmdName == "fontborder" ? "1px solid #000" : "line-through");
             var text;
             range = this.selection.getRange();
+            console.log(value);
             if (value == "default") {
               if (range.collapsed) {
                 text = me.document.createTextNode("font");
@@ -531,7 +532,6 @@ UE.plugins["font"] = function() {
         },
         queryCommandValue: function(cmdName) {
           var startNode = this.selection.getStart();
-
           //trace:946
           if (cmdName == "underline" || cmdName == "strikethrough") {
             var tmpNode = startNode,

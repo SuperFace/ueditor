@@ -1594,7 +1594,7 @@ var domUtils = (dom.domUtils = {
      * ```
      */
   getComputedStyle: function(element, styleName) {
-    //一下的属性单独处理
+    //以下的属性单独处理
     var pros = "width height top left";
 
     if (pros.indexOf(styleName) > -1) {
