@@ -18,8 +18,8 @@
         uploadFile;
 
     window.onload = function(){
-        userRole = utils.getCookie('user_role') || 0;
-        universityId = utils.getCookie('university_id') || 122;
+        userRole = utils.getCookie('user_role') || null;
+        universityId = utils.getCookie('university_id') || null;
         $(document).on('ajaxSend', function (event, xhr, settings) {
             // 在发送请求之前做些什么
             if(settings.url.indexOf(yunpanServerUrl) != -1){
