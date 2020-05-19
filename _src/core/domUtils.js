@@ -2210,7 +2210,6 @@ var domUtils = (dom.domUtils = {
   isEmptyBlock: function(node, reg) {
     if (node.nodeType != 1) return 0;
     reg = reg || new RegExp("[ \xa0\t\r\n" + domUtils.fillChar + "]", "g");
-
     if (
       node[browser.ie ? "innerText" : "textContent"].replace(reg, "").length > 0
     ) {

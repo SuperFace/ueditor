@@ -254,6 +254,8 @@ var dtd = (dom.dtd = (function() {
       col: 1,
       hr: 1,
       img: 1,
+      audio:1,
+      video:1,
       embed: 1,
       input: 1,
       textarea: 1,

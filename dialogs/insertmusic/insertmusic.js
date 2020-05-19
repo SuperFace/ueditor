@@ -390,7 +390,7 @@
             if(!!searchVal){
                 setYunPanListState(true);
                 $.ajax({
-                    url: "http://apimock.xuetangx.com/mock/131/api/open/yunpan/file/search?role=" + userRole + "&file_type=2&search=" + encodeURIComponent(searchVal),
+                    //url: "http://apimock.xuetangx.com/mock/131/api/open/yunpan/file/search?role=" + userRole + "&file_type=2&search=" + encodeURIComponent(searchVal),
                     url: yunpanServerUrl + "?role=" + userRole + "&file_type=2&current_location=0",
                     type: "GET",
                     beforeSend: function(xhr){
@@ -464,6 +464,10 @@
             for(var j=0; j<selectYanPanMusicList.length; j++){
                 var id = selectYanPanMusicList[j];
                 var _music1 = selectYanPanMusicObj[id];
+                //雨课堂音频域名替换：
+                //    http://st0.ykt.io/Fi_KzW-iVvJxno-3fQgBhjxd8Jds.mp3  
+                //    https://qn-st0.yuketang.cn/Fi_KzW-iVvJxno-3fQgBhjxd8Jds.mp3
+                _music1.url = _music1.url.replace(/^http:\/\/([a-z|A-Z|0-9]+)\.ykt\.io\/([a-z|A-Z|0-9]+)/g, "https://qn-$1.yuketang.cn/$2");
                 musicObjs.push({
                     id: _music1.id,
                     //url: "https://yunpanx.bj.bcebos.com/v1/encodetest/Kalimba%20-%20%E5%89%AF%E6%9C%AC.mp3",
@@ -638,8 +642,13 @@
         if ( !checkNum( [width, height] ) ) return false;
         for(var key in uploadMusicList) {
             var file = uploadMusicList[key];
+            var url = uploadDir + file.url;
+            //雨课堂音频域名替换：
+            //    http://st0.ykt.io/Fi_KzW-iVvJxno-3fQgBhjxd8Jds.mp3  
+            //    https://qn-st0.yuketang.cn/Fi_KzW-iVvJxno-3fQgBhjxd8Jds.mp3
+            url = url.replace(/^http:\/\/([a-z|A-Z|0-9]+)\.ykt\.io\/([a-z|A-Z|0-9]+)/g, "https://qn-$1.yuketang.cn/$2");
             musicObjs.push({
-                url: uploadDir + file.url,
+                url: url,
                 name: file.name,
                 width:width,
                 height:height,

@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ueditor图片对话框</title>
+    <script type="text/javascript" src="../internal.js"></script>
+
+    <!-- jquery -->
+    <script type="text/javascript" src="../../third-party/jquery-1.10.2.min.js"></script>
+
+    <!-- image dialog -->
+    <link rel="stylesheet" href="phoneimage.css" type="text/css" />
+</head>
+<body>
+
+    <div class="wrapper">
+        <div id="tabbody" class="tabbody">
+            <div id="qr-box" class="qr-box">
+                <div class="exam-qr">
+                    <img class="qr" src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/49d0d45c3bf1445dc7fd54942bc1adad.qr-temp.png" />
+                </div>
+                <div class="scanqr-tip">
+                    <span>1.手机扫描左侧二维码，在手机端公众号中发送图片</span>
+                    <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/efc8db4aa5d54b1ccc4a74d7da603133.gongzhonghao-tip.png" />
+                    <span>2.图片发送成功后，在下方选择要上传的图片</span>
+                </div>
+            </div>
+            <div class="tips">
+                <h2>手机图片</h2>
+                <div class="info"></div>
+                <span>（若未自动同步图片，<a class="refrech-mobile-uploadlist">点此刷新</a> 获取最新上传的图片）</span>
+            </div>
+            <div id="queueList" class="queueList">
+                <div class="queuelist-none">请先扫码，在手机端上传图片</div>
+                <div class="loading-wrapper"><div class="typing_loader"></div></div>
+                <div class="queueList-box">
+                    <!-- <ul>
+                        <li class="img-item selected">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item selected">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item selected">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item selected">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item selected">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                        <li class="img-item">
+                            <img src="//storagecdn.xuetangx.com/public_assets/xuetangx/images/8b4696576e58a14dedf6c282aa737e84.upload-mobile-img-temp.png" />
+                            <div class="select-box">
+                                <i class="icon-select"></i>
+                            </div>
+                        </li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="phoneimage.js"></script>
+
+</body>
+</html>

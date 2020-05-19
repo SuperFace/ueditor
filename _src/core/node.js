@@ -157,7 +157,7 @@
       attrhtml = attrhtml.join(" ");
     }
     arr.push(
-      "<" +
+      ((node.tagName == "audio" || node.tagName == "video") ? "&#8203;<" : "<") +
         node.tagName +
         (attrhtml ? " " + attrhtml : "") +
         (dtd.$empty[node.tagName] ? "/" : "") +
@@ -195,7 +195,11 @@
           insertIndent(arr, current);
         }
       }
-      arr.push("</" + node.tagName + ">");
+      if(node.tagName == "audio" || node.tagName == "video"){
+        arr.push("</" + node.tagName + ">&#8203;");
+      }else{
+        arr.push("</" + node.tagName + ">");
+      }
     }
   }
 

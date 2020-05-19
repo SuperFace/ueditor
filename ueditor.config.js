@@ -34,6 +34,9 @@
     videoActionName: "uploadvideo",
     musicActionName: "uploadvideo",
     yunpanServerUrl: "http://apimock.xuetangx.com/mock/131/api/open/yunpan/file-tree",
+    examId: '2182',//考试id
+    mobileUploadImgQrApi: "http://apimock.xuetangx.com/mock/667/exam_room/mobile_upload_qr",
+    mobileUploadedImaListApi: "http://apimock.xuetangx.com/mock/667/exam_room/mobile_img_list",
 
     //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
     toolbars: [
@@ -96,6 +99,7 @@
         "|",
         "simpleupload",
         "insertimage",
+        "phoneimage",
         "emotion",
         "scrawl",
         "insertvideo",

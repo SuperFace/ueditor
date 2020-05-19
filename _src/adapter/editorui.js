@@ -30,6 +30,7 @@
   var iframeUrlMap = {
     anchor: "~/dialogs/anchor/anchor.html",
     insertimage: "~/dialogs/image/image.html",
+    phoneimage: "~/dialogs/phoneimage/phoneimage.html",
     link: "~/dialogs/link/link.html",
     spechars: "~/dialogs/spechars/spechars.html",
     searchreplace: "~/dialogs/searchreplace/searchreplace.html",
@@ -238,6 +239,7 @@
       "anchor",
       "link",
       "insertimage",
+      "phoneimage",
       "map",
       "gmap",
       "insertframe",

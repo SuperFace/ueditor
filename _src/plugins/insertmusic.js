@@ -13,7 +13,6 @@ UE.plugins["insertmusic"] = function() {
   me.addInputRule(function(root) {
 
   });
-
   me.commands["insertmusic"] = {
     execCommand: function(cmd, musicObjs, type) {
       var doc = this.body.ownerDocument;  
@@ -33,10 +32,10 @@ UE.plugins["insertmusic"] = function() {
         floatStr = "margin: 10px;width:"+(vi.width || 258)+"px;height:"+(vi.height || 48)+"px;";
         if(align == "center") floatStr += "display:block;margin:10px auto;";
         else floatStr += 'float:' + align + ';';
-        _html += '<audio class="' + cl + '" controls="controls" controlsList="nodownload" oncontextmenu="return false" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
-        (url ? 'src="' + url + '" style="position:relative;outline:none;' + floatStr + '"'
+        _html += '&#8203;<audio class="' + cl + '" controls="controls" controlsList="nodownload" oncontextmenu="return false" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
+        (url ? 'src="' + url + '" style="position:relative;outline:none;vertical-align: middle;' + floatStr + '"'
         : 'style="position:relative;outline:none;opacity:0.5;'  + floatStr  + '"')
-        + '></audio>';
+        + '>浏览器不支持音频</audio>&#8203;';
         if(align == "center") _html = '<p>'+_html+'</p>';
         html += _html;
       }

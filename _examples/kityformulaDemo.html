@@ -117,6 +117,7 @@
               "|",
               "simpleupload",
               "insertimage",
+              "phoneimage",
               "emotion",
               "scrawl",
               "insertvideo",
@@ -158,15 +159,23 @@
               "preview",
               "fillblank",
               "kityformula",
+              "phoneimage",
               "searchreplace",
               "drafts",
               "help"
             ]
           ],
           theme: 'gray',
+          examId: '2182',//考试id
           initialFrameHeight:320  //初始化编辑器高度,默认320
         };
-        UE.getEditor('myEditor', config);
+        var editor = UE.getEditor('myEditor', config), ccHandler= null;
+        editor.on('blur', (e) => {
+            if(ccHandler) clearTimeout(ccHandler);
+            ccHandler = setTimeout(()=>{
+                const text = editor.getContent();
+            }, 200);
+        })
     </script>
 
 </body>

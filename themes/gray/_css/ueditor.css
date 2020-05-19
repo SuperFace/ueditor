@@ -77,7 +77,7 @@ div.edui-box {
     position: relative;
     zoom: 1;
     border-bottom: 1px solid #d4d4d4;
-    /* background-color: #fff; */
+    background-color: #fff;
 }
 .edui-gray .edui-toolbar .edui-button, .edui-gray .edui-toolbar .edui-splitbutton, .edui-gray .edui-toolbar .edui-menubutton, .edui-gray .edui-toolbar .edui-combox {
   margin: 5px;
@@ -461,14 +461,23 @@ div.edui-box {
 .edui-gray .edui-toolbar .edui-for-insertmusic .edui-icon{
     width: 20px;
     height: 20px;
+    top:1px;
     background-image: url(../images/music.png) !important;
     background-size: 20px 20px;
     background-position: center;
 }
 
 /**附件**/
-.edui-gray .edui-for-attachment .edui-icon:before {
+/* .edui-gray .edui-for-attachment .edui-icon:before {
 	content: "\e68a";
+} */
+.edui-gray .edui-toolbar .edui-for-attachment .edui-icon{
+    width: 20px;
+    height: 20px;
+    top:1px;
+    background-image: url(../images/attachment.png) !important;
+    background-size: 20px 20px;
+    background-position: center;
 }
 /**Baidu地图**/
 .edui-gray .edui-for-map .edui-icon:before {
@@ -663,11 +672,19 @@ div.edui-box {
 .edui-gray .edui-toolbar .edui-button.edui-for-kityformula .edui-icon{
     width:20px;
     height:20px;
+    top:1px;
     background: url(../images/kf-icon.png) !important;
+}
+.edui-gray .edui-toolbar .edui-button.edui-for-phoneimage .edui-icon{
+    width:20px;
+    height:20px;
+    top:1px;
+    background:url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHdpZHRoPSIxNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnPjxwYXRoIGQ9Im0xIDFoOXYxNGgtOXoiIHN0cm9rZT0iIzU4NWQ2NyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9Ii44Ii8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNC4wMDQxNDIgMykiPjxwYXRoIGQ9Im0xMSAwdjloLTExdi05eiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjNTg1ZDY3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iLjgiLz48cGF0aCBkPSJtLjk5NTg1ODQ1IDUuMTg5ODYyNTljLjcxMjE1Mzc4LS43OTMyNDE3MyAxLjYzMjYzODc2LTEuMTg5ODYyNTkgMi43NjE0NTQ5NS0xLjE4OTg2MjU5IDEuNjkzMjI0MjcgMCAyLjQzNTc0OTcxIDIuMjAzOTU5OTEgMy44NDUxNTYyIDIuNTc3MDU0ODkuOTM5NjA0MzIuMjQ4NzI5OTggMS43Mzc0MDA2LjA5NDEzODk5IDIuMzkzMzg4ODUtLjQ2Mzc3Mjk4djEuODg2NzE4MDloLTl6bTgtMS4xODk4NjI1OWMtLjU1MjI4NDc1IDAtMS0uNDQ3NzE1MjUtMS0xcy40NDc3MTUyNS0xIDEtMSAxIC40NDc3MTUyNSAxIDEtLjQ0NzcxNTI1IDEtMSAxeiIgZmlsbD0iIzU4NWQ2NyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PC9nPjwvZz48cGF0aCBkPSJtNCAxM2gzdjFoLTN6IiBmaWxsPSIjNTg1ZDY3Ii8+PC9nPjwvc3ZnPg==') center center no-repeat !important;
 }
 .edui-gray .edui-toolbar .edui-button.edui-for-fillblank .edui-icon{
     width: 25px;
     height: 25px;
+    top:1px;
     background-image: url(../images/fillblank-icon0.png) !important;
     background-size: 25px 25px;
     background-position: center;
@@ -1111,6 +1128,12 @@ div.edui-box {
     overflow: hidden;
 }
 
+/*phoneimage-dialog*/
+.edui-gray .edui-for-phoneimage .edui-dialog-content {
+    width: 662px;
+    height: 460px;
+    overflow: hidden;
+}
 
 
 

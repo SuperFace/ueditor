@@ -141,6 +141,27 @@
         return align == 'none' ? '':align;
     }
 
+    /* 获取图片的原始尺寸 */
+    function getImgNaturalStyle(imgUrl, callback) { 
+        var nWidth, nHeight;
+        // if (img.naturalWidth) { // 现代浏览器
+        //     nWidth = img.naturalWidth;
+        //     nHeight = img.naturalHeight;
+        // } else { // 传统方式
+            var image = new Image();
+            image.src = imgUrl;
+            if(image.complete){
+                callback(image.width, image.height);
+                image = null;
+            }else{
+                image.onload = function () {
+                    callback(image.width, image.height);
+                    image = null;
+                };
+            }
+        //}
+    }
+    
 
     /* 在线图片 */
     function RemoteImage(target) {
@@ -349,7 +370,7 @@
                 acceptExtensions = (editor.getOpt('imageAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, ''),
                 imageMaxSize = editor.getOpt('imageMaxSize'),
                 imageCompressBorder = editor.getOpt('imageCompressBorder');
-            console.log(actionUrl);
+
             if (!WebUploader.Uploader.support()) {
                 $('#filePickerReady').after($('<div>').html(lang.errorNotSupport)).hide();
                 return;
@@ -727,7 +748,11 @@
                                 url: json.data.url,
                                 original: "新的图片"
                             }
-                            _this.imageList.push( imgData );
+                            getImgNaturalStyle(imgData.url, function(w, h){
+                                imgData['width'] = w;
+                                imgData['height'] = h;
+                                _this.imageList.push( imgData );
+                            });
                         } else {
                             _this.imageList.push(json);
                         }
@@ -797,6 +822,8 @@
                 list.push({
                     src: prefix + data.url,
                     _src: prefix + data.url,
+                    width: (data['width'] >= $(editor.container).width()-16) ? '80%' : data['width'] || '',
+                    height: 'auto',
                     alt: data.original,
                     floatStyle: align
                 });

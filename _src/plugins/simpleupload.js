@@ -78,7 +78,6 @@ UE.plugin.register("simpleupload", function() {
         var loadingId = "loading_" + (+new Date()).toString(36);
         var params =
           utils.serializeParam(me.queryCommandValue("serverparam")) || "";
-
         var imageActionUrl = me.getActionUrl(me.getOpt("imageActionName"));
         var allowFiles = me.getOpt("imageAllowFiles");
 

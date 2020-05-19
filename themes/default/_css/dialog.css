@@ -196,6 +196,12 @@
     height: 400px;
     overflow: hidden;
 }
+/*phoneimage-dialog*/
+.edui-default .edui-for-phoneimage .edui-dialog-content {
+    width: 650px;
+    height: 400px;
+    overflow: hidden;
+}
 /*webapp-dialog*/
 .edui-default .edui-for-webapp .edui-dialog-content {
     width: 560px;
