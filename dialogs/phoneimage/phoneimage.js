@@ -7,7 +7,14 @@
 
 (function () {
 
-    var uploadImage;
+    var uploadImage, 
+        hostName,
+        guideImgs = {
+            "yuketang": "//storagecdn.xuetangx.com/public_assets/xuetangx/images/12ec0f4ace133aeb81571c3bc84d2524.yuketang-3x.png",//雨课堂
+            "huanghe": "//storagecdn.xuetangx.com/public_assets/xuetangx/images/058534418bdef25506bb20825b3d600c.huanghe-3x.png",//黄河
+            "hetang": "//storagecdn.xuetangx.com/public_assets/xuetangx/images/be40595f74dd8005d732d09bd65b00b4.hetang-3x.png",//荷塘
+            "changjiang": "//storagecdn.xuetangx.com/public_assets/xuetangx/images/237ec3c31f6ff3a135ad956717cca57c.changjiang-3x.png"//长江
+        };
 
     window.onload = function () {
         init();
@@ -16,6 +23,8 @@
 
     /* 初始化tab标签 */
     function init() {
+        hostName = window.location.hostname;
+
         uploadImage = uploadImage || new UploadImage('tabbody');
     }
 
@@ -60,6 +69,19 @@
     }
     UploadImage.prototype = {
         init: function () {
+            var guideImgSrc = guideImgs.yuketang;
+            if(/www\.yuketang\.cn/ig.test(hostName)){
+                guideImgSrc = guideImgs.yuketang;
+            }else if(/pro\.yuketang\.cn/ig.test(hostName)){
+                guideImgSrc = guideImgs.huanghe;
+            }else if(/changjiang\.yuketang\.cn/ig.test(hostName)){
+                guideImgSrc = guideImgs.changjiang;
+            }else if(/huanghe\.yuketang\.cn/ig.test(hostName)){
+                guideImgSrc = guideImgs.huanghe;
+            }
+            this.$wrap.find(".guide-img").attr("src", guideImgSrc);
+            this.$wrap.find(".guide-img").addClass("show");
+
             this.isRefreshList = false;
             this.isLoading = false;
             this.loopHandler = null;
@@ -89,7 +111,7 @@
                         data = data.data;
                         _this.qrSrc = "qr_code" in data ? data.qr_code : '';
                         if(_this.qrSrc){
-                            _this.$wrap.find(".qr").attr("src", _this.qrSrc);
+                            _this.$wrap.find(".qr").attr("src", _this.qrSrc).addClass("show");
                         }
                     }
                 },
@@ -133,6 +155,9 @@
                             _this.$wrap.find(".queueList-box").hide();
                         }
                         _this.initList();
+                    }else{
+                        _this.$wrap.find(".queuelist-none").show();
+                        _this.$wrap.find(".queueList-box").hide();
                     }
                 },
                 error: function(xhr, err, e){
@@ -146,35 +171,78 @@
         fetchMobileUploadedImgListLoop: function(){
             var _this = this;
             _this.fetchMobileUploadedImgList();
-            if(_this.loopHandler) _this.loopHandler = null;
+            if(_this.loopHandler) clearInterval(_this.loopHandler);
             _this.loopHandler = setInterval(function(){
                 _this.fetchMobileUploadedImgList(true);
             }, 3000);
         },
+        changeInfo(){
+            var _this = this;
+            var text = '';
+            if(_this.imageList.length){
+                text = lang.updateImgStatusList.replace('_n', _this.selectedImageList.length).replace('_', _this.imageList.length);
+            }
+            _this.$wrap.find(".info").html(text);
+        },
         initList(){
             var _this = this;
+            _this.changeInfo();
             _this.$wrap.find("li.img-item").off("click");
             if(_this.imageList.length){
                 if(_this.$wrap.find("li.img-item").length){
-                    for(var j=0; j<_this.imageList.length;j++){
-                        var _imgUrl = _this.imageList[j];
-                        if(!_this.$wrap.find("li.img-item[_url='"+_imgUrl+"']").length){
-                            _this.$wrap.find(".queueList-box ul").append('<li class="img-item" _url="'+_imgUrl+'">'
-                            + '<img src="'+_imgUrl+'" />'
-                            + '<div class="select-box"><i class="icon-select"></i></div>'
-                            + '</li>');
-                            (function(url){
-                                getImgNaturalStyle(url, function(w, h){
-                                    _this.$wrap.find("li.img-item[_url='"+url+"']").attr("_width", w).attr("_height", h);
-                                });
-                            })(_imgUrl);
+                    var imgListDOM = _this.$wrap.find("li.img-item");
+                    var orderError = false;
+                    var selectedImageList = [];
+                    for(var m=0; m<imgListDOM.length;m++){
+                        var img_url = $(imgListDOM[m]).attr("_url");
+                        if($(imgListDOM[m]).hasClass('selected')) selectedImageList.push(img_url);
+                        if(_this.imageList[m] != img_url){
+                            orderError = true;
+                        }
+                    }
+                    if(selectedImageList.length) selectedImageList = selectedImageList.join(",") + ",";
+                    if(orderError){
+                        var _html = '<ul>';
+                        for(var j=0; j<_this.imageList.length;j++){
+                            var _imgUrl = _this.imageList[j];
+                            var isSelected = selectedImageList.indexOf(_imgUrl + ",") != -1 ? true : false;
+                            _html += (isSelected ? '<li class="img-item selected" _url="'+_imgUrl+'" order='+j+'>' : '<li class="img-item" _url="'+_imgUrl+'" order='+j+'>')
+                                    + '<img src="'+_imgUrl+'" />'
+                                    + '<div class="select-box"><i class="icon-select"></i></div>'
+                                    + '</li>';
+                        }
+                        _html += '</ul>';
+                        _this.$wrap.find(".queueList-box").html(_html);
+                    }else{
+                        for(var j=0; j<_this.imageList.length;j++){
+                            var _imgUrl = _this.imageList[j];
+                            if(!_this.$wrap.find("li.img-item[_url='"+_imgUrl+"']").length){
+                                if(j==0){
+                                    _this.$wrap.find(".queueList-box ul").prepend('<li class="img-item" _url="'+_imgUrl+'" order='+j+'>'
+                                    + '<img src="'+_imgUrl+'" />'
+                                    + '<div class="select-box"><i class="icon-select"></i></div>'
+                                    + '</li>');
+                                }else{
+                                    _this.$wrap.find("li.img-item[order="+(j-1)+"]").after('<li class="img-item" _url="'+_imgUrl+'" order='+j+'>'
+                                    + '<img src="'+_imgUrl+'" />'
+                                    + '<div class="select-box"><i class="icon-select"></i></div>'
+                                    + '</li>');
+                                }
+                                (function(url){
+                                    getImgNaturalStyle(url, function(w, h){
+                                        _this.$wrap.find("li.img-item[_url='"+url+"']").attr("_width", w).attr("_height", h);
+                                    });
+                                })(_imgUrl);
+                            }else{
+                                _this.$wrap.find("li.img-item[_url='"+_imgUrl+"']").attr("order", j);
+                            }
                         }
                     }
                 }else{
                     var _html = '<ul>';
                     for(var j=0; j<_this.imageList.length;j++){
                         var _imgUrl = _this.imageList[j];
-                        _html += '<li class="img-item" _url="'+_imgUrl+'">'
+                        _html += '<li class="img-item" _url="'+_imgUrl+'" order='+j+'>'
                                 + '<img src="'+_imgUrl+'" />'
                                 + '<div class="select-box"><i class="icon-select"></i></div>'
                                 + '</li>';
@@ -208,7 +276,7 @@
                         height: $(selectedDOM[m]).attr("_height")
                     });
                 }
-                console.log(_this.selectedImageList);
+                _this.changeInfo();
             });
         },
         getToken: function () {
@@ -234,6 +302,7 @@
                     height: 'auto'
                 });
             }
+            if(_this.loopHandler) clearInterval(_this.loopHandler);
             return list;
         }
     };

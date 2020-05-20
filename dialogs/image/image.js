@@ -143,7 +143,6 @@
 
     /* 获取图片的原始尺寸 */
     function getImgNaturalStyle(imgUrl, callback) { 
-        var nWidth, nHeight;
         // if (img.naturalWidth) { // 现代浏览器
         //     nWidth = img.naturalWidth;
         //     nHeight = img.naturalHeight;
@@ -751,10 +750,15 @@
                             getImgNaturalStyle(imgData.url, function(w, h){
                                 imgData['width'] = w;
                                 imgData['height'] = h;
+                                console.log("width=", w);
                                 _this.imageList.push( imgData );
                             });
                         } else {
-                            _this.imageList.push(json);
+                            getImgNaturalStyle(json.url, function(w, h){
+                                json['width'] = w;
+                                json['height'] = h;
+                                _this.imageList.push(json);
+                            });
                         }
                         $file.append('<span class="success"></span>');
                     } else {

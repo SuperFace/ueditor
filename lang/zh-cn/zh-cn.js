@@ -349,7 +349,7 @@ UE.I18N['zh-cn'] = {
         'uploadPreview':'预览中',
         'uploadNoPreview':'不能预览',
         'updateStatusReady': '选中_张图片，共_KB。',
-        'updateImgStatusList': '共_张图片，选中_张',
+        'updateImgStatusList': '共_张图片，选中_n张',
         'updateStatusConfirm': '已成功上传_张照片，_张照片上传失败',
         'updateStatusFinish': '共_张（_KB），_张上传成功',
         'updateStatusError': '，_张上传失败。',

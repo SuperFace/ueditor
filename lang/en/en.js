@@ -349,7 +349,7 @@ UE.I18N['en'] = {
         'uploadPreview':'Doing Preview',
         'uploadNoPreview':'Can Not Preview',
         'updateStatusReady': 'Selected _ pictures, total _KB.',
-        'updateImgStatusList': 'Total _ pictures, Selected _ pictures',
+        'updateImgStatusList': 'Total _ pictures, Selected _n pictures',
         'updateStatusConfirm': '_ uploaded successfully and _ upload failed',
         'updateStatusFinish': 'Total _ pictures (_KB), _  uploaded successfully',
         'updateStatusError': ' and _ upload failed',
