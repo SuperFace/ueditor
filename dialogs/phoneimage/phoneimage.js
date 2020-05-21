@@ -70,14 +70,14 @@
     UploadImage.prototype = {
         init: function () {
             var guideImgSrc = guideImgs.yuketang;
-            if(/www\.yuketang\.cn/ig.test(hostName)){
+            if(/examination\.xuetangx\.com/ig.test(hostName)){
                 guideImgSrc = guideImgs.yuketang;
-            }else if(/pro\.yuketang\.cn/ig.test(hostName)){
+            }else if(/huanghe-exam\.yuketang\.cn/ig.test(hostName)){
                 guideImgSrc = guideImgs.huanghe;
-            }else if(/changjiang\.yuketang\.cn/ig.test(hostName)){
+            }else if(/changjang-exam\.yuketang\.cn/ig.test(hostName)){
                 guideImgSrc = guideImgs.changjiang;
-            }else if(/huanghe\.yuketang\.cn/ig.test(hostName)){
-                guideImgSrc = guideImgs.huanghe;
+            }else if(/tsinghua-exam.yuketang.cn/ig.test(hostName)){
+                guideImgSrc = guideImgs.hetang;
             }
             this.$wrap.find(".guide-img").attr("src", guideImgSrc);
             this.$wrap.find(".guide-img").addClass("show");
@@ -191,7 +191,7 @@
             if(_this.imageList.length){
                 if(_this.$wrap.find("li.img-item").length){
                     var imgListDOM = _this.$wrap.find("li.img-item");
-                    var orderError = false;
+                    var orderError = false;//手机上传图片排序是否错误
                     var selectedImageList = [];
                     for(var m=0; m<imgListDOM.length;m++){
                         var img_url = $(imgListDOM[m]).attr("_url");
@@ -228,11 +228,11 @@
                                     + '<div class="select-box"><i class="icon-select"></i></div>'
                                     + '</li>');
                                 }
-                                (function(url){
-                                    getImgNaturalStyle(url, function(w, h){
-                                        _this.$wrap.find("li.img-item[_url='"+url+"']").attr("_width", w).attr("_height", h);
-                                    });
-                                })(_imgUrl);
+                                // (function(url){
+                                //     getImgNaturalStyle(url, function(w, h){
+                                //         _this.$wrap.find("li.img-item[_url='"+url+"']").attr("_width", w).attr("_height", h);
+                                //     });
+                                // })(_imgUrl);
                             }else{
                                 _this.$wrap.find("li.img-item[_url='"+_imgUrl+"']").attr("order", j);
                             }
