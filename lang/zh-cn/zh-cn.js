@@ -296,7 +296,7 @@ UE.I18N['zh-cn'] = {
         'updateStatusError': '，_张上传失败。',
         'errorNotSupport': 'WebUploader 不支持您的浏览器！如果你使用的是IE浏览器，请尝试升级 flash 播放器。',
         'errorLoadConfig': '后端配置项没有正常加载，上传插件不能正常使用！',
-        'errorExceedSize':'文件大小超出',
+        'errorExceedSize':'图片大小超出10M',
         'errorFileType':'文件格式不允许',
         'errorInterrupt':'文件传输中断',
         'errorUploadRetry':'上传失败，请重试',

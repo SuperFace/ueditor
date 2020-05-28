@@ -143,22 +143,17 @@
 
     /* 获取图片的原始尺寸 */
     function getImgNaturalStyle(imgUrl, callback) { 
-        // if (img.naturalWidth) { // 现代浏览器
-        //     nWidth = img.naturalWidth;
-        //     nHeight = img.naturalHeight;
-        // } else { // 传统方式
-            var image = new Image();
-            image.src = imgUrl;
-            if(image.complete){
+        var image = new Image();
+        image.src = imgUrl;
+        if(image.complete){
+            callback(image.width, image.height);
+            image = null;
+        }else{
+            image.onload = function () {
                 callback(image.width, image.height);
                 image = null;
-            }else{
-                image.onload = function () {
-                    callback(image.width, image.height);
-                    image = null;
-                };
-            }
-        //}
+            };
+        }
     }
     
 
@@ -757,6 +752,7 @@
                             getImgNaturalStyle(json.url, function(w, h){
                                 json['width'] = w;
                                 json['height'] = h;
+                                console.log("width=", w);
                                 _this.imageList.push(json);
                             });
                         }

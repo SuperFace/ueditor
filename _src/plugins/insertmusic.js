@@ -6,12 +6,53 @@
 
 UE.plugins["insertmusic"] = function() {
   var me = this;
-  
   me.addOutputRule(function(root) {
 
   });
   me.addInputRule(function(root) {
 
+  });
+  me.addListener("keydown", function(type, e) {
+    var keyCode = e.keyCode || e.which;
+    if(keyCode == 39 || keyCode == 37){
+      var audios = me.body.ownerDocument.getElementsByTagName("audio");
+      for(var i=0; i<audios.length;i++){
+        var ele = audios[i];
+        if(!domUtils.getNextDomNode(ele, false)){
+          
+          var txtNode = me.body.ownerDocument.createElement("span");
+          txtNode.innerHTML = "&#8203;";
+          domUtils.insertAfter(ele,txtNode);
+        }
+      }
+    }
+  }.bind(me));
+  me.addListener("keyup", function(type, e) {
+    var keyCode = e.keyCode || e.which;
+    if(keyCode == 8){
+      setTimeout(function(){
+        var audios = me.body.ownerDocument.getElementsByTagName("audio");
+        for(var i=0; i<audios.length;i++){
+          var ele = audios[i];
+          if(!domUtils.getNextDomNode(ele, false)){
+            var txtNode = me.body.ownerDocument.createElement("span");
+            txtNode.innerHTML = "&#8203;";
+            domUtils.insertAfter(ele,txtNode);
+          }
+        }
+      }, 300);
+    }
+  }.bind(me));
+  me.addListener("click", function(type, e) {
+    var audios = me.body.ownerDocument.getElementsByTagName("audio");
+    for(var i=0; i<audios.length;i++){
+      var ele = audios[i];
+      if(!domUtils.getNextDomNode(ele, false)){
+        var txtNode = me.body.ownerDocument.createElement("span");
+        txtNode.innerHTML = "&#8203;";
+        domUtils.insertAfter(ele,txtNode);
+      }
+    }
   });
   me.commands["insertmusic"] = {
     execCommand: function(cmd, musicObjs, type) {
@@ -32,10 +73,10 @@ UE.plugins["insertmusic"] = function() {
         floatStr = "margin: 10px;width:"+(vi.width || 258)+"px;height:"+(vi.height || 48)+"px;";
         if(align == "center") floatStr += "display:block;margin:10px auto;";
         else floatStr += 'float:' + align + ';';
-        _html += '&#8203;<audio class="' + cl + '" controls="controls" controlsList="nodownload" oncontextmenu="return false" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
+        _html += '<span>&#8203;</span><audio class="' + cl + '" controls="controls" controlsList="nodownload" oncontextmenu="return false" preload="auto" width="' + (vi.width || 258) + '" height="' + (vi.height || 48) + '" ' +
         (url ? 'src="' + url + '" style="position:relative;outline:none;vertical-align: middle;' + floatStr + '"'
         : 'style="position:relative;outline:none;opacity:0.5;'  + floatStr  + '"')
-        + '>浏览器不支持音频</audio>&#8203;';
+        + '>浏览器不支持音频</audio><span>&#8203;</span>';
         if(align == "center") _html = '<p>'+_html+'</p>';
         html += _html;
       }

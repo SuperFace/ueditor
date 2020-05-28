@@ -6,6 +6,20 @@
  * @date 2013-10-14
  */
 UE.plugin.register("autoupload", function() {
+  /* 获取图片的原始尺寸 */
+  function getImgNaturalStyle(imgUrl, callback) { 
+    var image = new Image();
+    image.src = imgUrl;
+    if(image.complete){
+        callback(image.width, image.height);
+        image = null;
+    }else{
+        image.onload = function () {
+            callback(image.width, image.height);
+            image = null;
+        };
+    }
+  }
   function sendAndInsertFile(file, editor) {
     var me = editor;
     //模拟数据
@@ -45,14 +59,23 @@ UE.plugin.register("autoupload", function() {
         me.options.theme +
         '/images/spacer.gif">';
       successHandler = function(data) {
-        var link = urlPrefix + data.url,
-          loader = me.document.getElementById(loadingId);
+        //var link = urlPrefix + data.url;
+        var loader = me.document.getElementById(loadingId);
+        var link = "https://qn-next.xuetangx.com/15902407092082.jpg";
         if (loader) {
+          (function(url, id, loader){
+            getImgNaturalStyle(url, function(w, h){
+              me.document.getElementById(id).setAttribute("width", (w >= +(me.container.style.width.replace("px", ""))-16) ? '80%' : w || '');
+              me.document.getElementById(id).setAttribute("height", "auto");
+              me.document.getElementById(id).removeAttribute("id");
+              me.trigger("contentchange", loader);
+            });
+          })(link, loadingId, loader);
+
           domUtils.removeClasses(loader, "loadingclass");
           loader.setAttribute("src", link);
           loader.setAttribute("_src", link);
           loader.setAttribute("alt", data.original || "");
-          loader.removeAttribute("id");
           me.trigger("contentchange", loader);
         }
       };
@@ -118,6 +141,7 @@ UE.plugin.register("autoupload", function() {
     xhr.open("post", url, true);
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.addEventListener("load", function(e) {
+      successHandler();
       try {
         var json = new Function("return " + utils.trim(e.target.response))();
         if (json.state == "SUCCESS" && json.url) {

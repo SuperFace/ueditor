@@ -241,13 +241,30 @@ UE.commands["insertimage"] = {
         me.execCommand("insertimage", opt);
       }
     } else {
+      /* 获取图片的原始尺寸 */
+      function getImgNaturalStyle(imgUrl, callback) { 
+        var image = new Image();
+        image.src = imgUrl;
+        if(image.complete){
+            callback(image.width, image.height);
+            image = null;
+        }else{
+            image.onload = function () {
+                callback(image.width, image.height);
+                image = null;
+            };
+        }
+      }
+
       var html = [],
         str = "",
         ci;
       ci = opt[0];
+
       if (opt.length == 1) {
+        var _id = new Date().getTime() + '_0';
         str =
-          '<img src="' +
+          '<img id="' + _id + '" src="' +
           ci.src +
           '" ' +
           (ci._src ? ' _src="' + ci._src + '" ' : "") +
@@ -270,14 +287,24 @@ UE.commands["insertimage"] = {
           str = '<p style="text-align: center">' + str + "</p>";
         }
         html.push(str);
+
+        if(!ci.width){
+          (function(url, id){
+            getImgNaturalStyle(url, function(w, h){
+              me.document.getElementById(id).setAttributes("width", (w >= +(me.container.style.width.replace("px", ""))-16) ? '80%' : w || '');
+              me.document.getElementById(id).setAttributes("height", "auto");
+            });
+          })(ci.src, _id);
+        }
       } else {
         for (var i = 0; (ci = opt[i++]); ) {
+          var _id = new Date().getTime() + '_' + i;
           str =
             "<p " +
             (ci["floatStyle"] == "center"
               ? 'style="text-align: center" '
               : "") +
-            '><img src="' +
+            '><img id="' + _id + '" src="' +
             ci.src +
             '" ' +
             (ci.width ? 'width="' + ci.width + '" ' : "") +
@@ -292,6 +319,15 @@ UE.commands["insertimage"] = {
             (ci.title ? ' title="' + ci.title + '"' : "") +
             " /></p>";
           html.push(str);
+
+          if(!ci.width){
+            (function(url, id){
+              getImgNaturalStyle(url, function(w, h){
+                me.document.getElementById(id).setAttribute("width", (w >= +(me.container.style.width.replace("px", ""))-16) ? '80%' : w || '');
+                me.document.getElementById(id).setAttribute("height", "auto");
+              });
+            })(ci.src, _id);
+          }
         }
       }
 

@@ -269,10 +269,11 @@
                 editor.getLang("justifyleft") +
                 '</span>&nbsp;&nbsp;<span onclick=$$._setIframeAlign(1) class="edui-clickable">' +
                 editor.getLang("justifyright") +
-                "</span>&nbsp;&nbsp;" +
-                ' <span onclick="$$._updateIframe( this);" class="edui-clickable">' +
+                "</span>" +
+                '&nbsp;&nbsp; <span onclick="$$._updateIframe( this);" class="edui-clickable">' +
                 editor.getLang("modify") +
-                "</span></nobr>"
+                "</span>"+
+                "</nobr>"
             );
             if (html) {
               popup.getDom("content").innerHTML = html;
@@ -353,12 +354,9 @@
               "</span>&nbsp;&nbsp;" +
               '<span onclick=$$._onImgSetFloat("center") class="edui-clickable">' +
               editor.getLang("justifycenter") +
-              "</span>&nbsp;&nbsp;" +
-              "<span onclick=\"$$._onImgEditButtonClick('" +
-              dialogName +
-              '\');" class="edui-clickable">' +
-              editor.getLang("modify") +
-              "</span></nobr>";
+              "</span>"
+              +"&nbsp;&nbsp;<span onclick=\"$$._onImgEditButtonClick('" + dialogName + '\');" class="edui-clickable">' +editor.getLang("modify") + "</span>"
+              +"</nobr>";
 
             !html && (html = popup.formatHtml(str));
           }

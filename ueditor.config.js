@@ -204,14 +204,14 @@
     //启用拖放上传
     //,enableDragUpload: true
     //启用粘贴上传
-    //,enablePasteUpload: true
+    ,enablePasteUpload: true
 
     //启用图片拉伸缩放
-    //,imageScaleEnabled: true
+    ,imageScaleEnabled: true
 
     //,fullscreen : false //是否开启初始化时即全屏，默认关闭
 
-    //,imagePopup:true      //图片操作的浮层开关，默认打开
+    //,imagePopup:false      //图片操作的浮层开关，默认打开
 
     //,autoSyncData:true //自动同步编辑器要提交的数据
     ,emotionLocalization:true //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
@@ -336,7 +336,7 @@
     //]
 
     //打开右键菜单功能
-    //,enableContextMenu: true
+    ,enableContextMenu: false
     //右键菜单的内容，可以参考plugins/contextmenu.js里边的默认菜单的例子，label留空支持国际化，否则以此配置为准
     //,contextMenu:[
     //    {
@@ -402,7 +402,7 @@
     //,toolbarTopOffset:400
 
     //设置远程图片是否抓取到本地保存
-    //,catchRemoteImageEnable: true //设置是否抓取远程图片
+    ,catchRemoteImageEnable: false //设置是否抓取远程图片
 
     //pageBreakTag
     //分页标识符,默认是_ueditor_page_break_tag_
