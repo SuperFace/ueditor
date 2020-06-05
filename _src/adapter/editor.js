@@ -824,9 +824,9 @@
       this.getDom("toolbarmsg").style.display = "none";
     },
     mapUrl: function(url) {
-      return url
-        ? url.replace("~/", this.editor.options.UEDITOR_HOME_URL || "")
-        : "";
+      var tempUrl = url ? url.replace("~/", this.editor.options.UEDITOR_HOME_URL || "") : "";
+      var dataTemp = '_data=' + new Date().getTime();
+      return tempUrl + (tempUrl.indexOf("?")>-1 ? ('&' + dataTemp) : ('?' + dataTemp));
     },
     triggerLayout: function() {
       var dom = this.getDom();

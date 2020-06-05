@@ -150,7 +150,7 @@
 }
 .tabbody .qr-box .exam-qr img.qr{
     position: relative;
-    display: block;
+    display: none;
     width:200px;
     height:200px;
     opacity:0;
@@ -159,7 +159,11 @@
     -o-transition:opacity 100ms linear;
     transition:opacity 100ms linear;
 }
+.tabbody .qr-box .exam-qr .loading-wrapper{
+    padding-top: 90px !important;
+}
 .tabbody .qr-box .exam-qr img.qr.show{
+    display: block;
     opacity: 1;
 }
 .tabbody .qr-box .scanqr-tip{

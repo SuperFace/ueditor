@@ -59,9 +59,9 @@ UE.plugin.register("autoupload", function() {
         me.options.theme +
         '/images/spacer.gif">';
       successHandler = function(data) {
-        //var link = urlPrefix + data.url;
+        var link = urlPrefix + data.url;
         var loader = me.document.getElementById(loadingId);
-        var link = "https://qn-next.xuetangx.com/15902407092082.jpg";
+        //var link = "https://qn-next.xuetangx.com/15902407092082.jpg";
         if (loader) {
           (function(url, id, loader){
             getImgNaturalStyle(url, function(w, h){
@@ -141,7 +141,7 @@ UE.plugin.register("autoupload", function() {
     xhr.open("post", url, true);
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.addEventListener("load", function(e) {
-      successHandler();
+      //successHandler();
       try {
         var json = new Function("return " + utils.trim(e.target.response))();
         if (json.state == "SUCCESS" && json.url) {

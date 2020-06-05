@@ -12,13 +12,13 @@
         selectYanPanMusicObj = {},//记录选中的云盘id:val
         isModifyUploadMusic = false,
         isModifyYunPanMusic = false,
-        userRole = null, //请求云盘需要用户身份：(0, u"学校校长"), (1, u"学院主任"), (2, u"老师"), (-2, u"视频管理员")
+        userRole = 2, //请求云盘需要用户身份：(0, u"学校校长"), (1, u"学院主任"), (2, u"老师"), (-2, u"视频管理员")
         universityId = null,//请求云盘需要学校id
         yunpanServerUrl = editor.getOpt('yunpanServerUrl') || "",//云盘列表接口
         uploadFile;
 
     window.onload = function(){
-        userRole = utils.getCookie('user_role') || 0;
+        userRole = utils.getCookie('user_role') || 2;
         universityId = utils.getCookie('university_id') || 122;
         $(document).on('ajaxSend', function (event, xhr, settings) {
             // 在发送请求之前做些什么

@@ -65,6 +65,8 @@
     /* 上传图片 */
     function UploadImage(target) {
         this.$wrap = target.constructor == String ? $('#' + target) : $(target);
+        this.$qrbox = this.$wrap.find("#qr-box");
+        this.$queueList = this.$wrap.find("#queueList");
         this.init();
     }
     UploadImage.prototype = {
@@ -74,13 +76,15 @@
                 guideImgSrc = guideImgs.yuketang;
             }else if(/huanghe-exam\.yuketang\.cn/ig.test(hostName)){
                 guideImgSrc = guideImgs.huanghe;
+            }else if(/changjiang-exam\.yuketang\.cn/ig.test(hostName)){
+                guideImgSrc = guideImgs.changjiang;
             }else if(/changjang-exam\.yuketang\.cn/ig.test(hostName)){
                 guideImgSrc = guideImgs.changjiang;
-            }else if(/tsinghua-exam.yuketang.cn/ig.test(hostName)){
+            }else if(/tsinghua-exam\.yuketang\.cn/ig.test(hostName)){
                 guideImgSrc = guideImgs.hetang;
             }
-            this.$wrap.find(".guide-img").attr("src", guideImgSrc);
-            this.$wrap.find(".guide-img").addClass("show");
+            this.$qrbox.find(".guide-img").attr("src", guideImgSrc);
+            this.$qrbox.find(".guide-img").addClass("show");
 
             this.isRefreshList = false;
             this.isLoading = false;
@@ -89,6 +93,7 @@
             this.mobileUploadImgQrApi = editor.getOpt('mobileUploadImgQrApi') || '';//获取二维码接口
             this.mobileUploadedImaListApi = editor.getOpt('mobileUploadedImaListApi') || '';//获取手机上传图片列表接口
             this.qrSrc = '';
+            this.qrUrl = '';
             this.imageList = [];//从手机中上传的图片列表
             this.selectedImageList = [];//已经选择的图片列表
             this.initContainer();
@@ -102,6 +107,7 @@
         /* 获取考试+学生对应的二维码 */
         fetchQrcode: function () {
             var _this = this;
+            _this.$qrbox.find(".loading-wrapper").show();
             $.ajax({
                 url: this.mobileUploadImgQrApi + "?exam_id=" + this.examId,
                 type: "GET",
@@ -110,8 +116,18 @@
                     if(data.errcode == 0){
                         data = data.data;
                         _this.qrSrc = "qr_code" in data ? data.qr_code : '';
+                        _this.$qrbox.find(".loading-wrapper").hide();
                         if(_this.qrSrc){
-                            _this.$wrap.find(".qr").attr("src", _this.qrSrc).addClass("show");
+                            _this.$qrbox.find(".qr").attr("src", _this.qrSrc).addClass("show");
+                        }else{
+                            _this.qrUrl = "target" in data ? data.target : '';
+                            if(_this.qrUrl){
+                                var qrcode = new QRCode(_this.$qrbox.find(".exam-qr")[0], {
+                                    width : 200,
+                                    height : 200
+                                });
+                                qrcode.makeCode(_this.qrUrl);
+                            }
                         }
                     }
                 },
@@ -132,10 +148,10 @@
                 _this.isLoading = true; 
                 _this.$wrap.find(".queueList-box").hide();
                 _this.$wrap.find(".queuelist-none").hide();
-                _this.$wrap.find(".loading-wrapper").show();
+                _this.$queueList.find(".loading-wrapper").show();
             }else{
                 _this.isLoading = false; 
-                _this.$wrap.find(".loading-wrapper").hide();
+                _this.$queueList.find(".loading-wrapper").hide();
             }
             $.ajax({
                 url: this.mobileUploadedImaListApi + "?exam_id=" + this.examId,
@@ -143,7 +159,7 @@
                 dataType: "json",
                 success: function(data){
                     _this.isLoading = false;
-                    _this.$wrap.find(".loading-wrapper").hide();
+                    _this.$queueList.find(".loading-wrapper").hide();
                     if(data.errcode == 0){
                         data = data.data;
                         _this.imageList = "img_list" in data ? data.img_list : [];
@@ -162,7 +178,7 @@
                 },
                 error: function(xhr, err, e){
                     _this.isLoading = false;
-                    _this.$wrap.find(".loading-wrapper").hide();
+                    _this.$queueList.find(".loading-wrapper").hide();
                     _this.$wrap.find(".queuelist-none").show();
                     _this.$wrap.find(".queueList-box").hide();
                 }
