@@ -58,15 +58,15 @@
                 setAlign(editor.getOpt('imageInsertAlign'));
                 uploadImage = uploadImage || new UploadImage('queueList');
                 break;
-            case 'online':
-                setAlign(editor.getOpt('imageManagerInsertAlign'));
-                onlineImage = onlineImage || new OnlineImage('imageList');
-                onlineImage.reset();
-                break;
-            case 'search':
-                setAlign(editor.getOpt('imageManagerInsertAlign'));
-                searchImage = searchImage || new SearchImage();
-                break;
+            // case 'online':
+            //     setAlign(editor.getOpt('imageManagerInsertAlign'));
+            //     onlineImage = onlineImage || new OnlineImage('imageList');
+            //     onlineImage.reset();
+            //     break;
+            // case 'search':
+            //     setAlign(editor.getOpt('imageManagerInsertAlign'));
+            //     searchImage = searchImage || new SearchImage();
+            //     break;
         }
     }
 
@@ -742,19 +742,9 @@
                                 url: json.data.url,
                                 original: "新的图片"
                             }
-                            getImgNaturalStyle(imgData.url, function(w, h){
-                                imgData['width'] = w;
-                                imgData['height'] = h;
-                                console.log("width=", w);
-                                _this.imageList.push( imgData );
-                            });
+                            _this.imageList.push( imgData );
                         } else {
-                            getImgNaturalStyle(json.url, function(w, h){
-                                json['width'] = w;
-                                json['height'] = h;
-                                console.log("width=", w);
-                                _this.imageList.push(json);
-                            });
+                            _this.imageList.push(json);
                         }
                         $file.append('<span class="success"></span>');
                     } else {
@@ -814,6 +804,12 @@
             this.$wrap.remove();
         },
         getInsertList: function () {
+            // getImgNaturalStyle(imgData.url, function(w, h){
+            //     imgData['width'] = w;
+            //     imgData['height'] = h;
+            //     console.log("width=", w);
+                
+            // });
             var i, data, list = [],
                 align = getAlign(),
                 prefix = editor.getOpt('imageUrlPrefix');
@@ -822,7 +818,7 @@
                 list.push({
                     src: prefix + data.url,
                     _src: prefix + data.url,
-                    width: (data['width'] >= $(editor.container).width()-16) ? '80%' : data['width'] || '',
+                    width: (data['width'] && data['width'] >= $(editor.container).width()-16) ? '80%' : data['width'] || '',
                     height: 'auto',
                     alt: data.original,
                     floatStyle: align

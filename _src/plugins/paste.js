@@ -192,6 +192,7 @@ UE.plugins["paste"] = function() {
       if (!html.html) {
         return;
       }
+      
       root = UE.htmlparser(html.html, true);
       //如果开启了纯文本模式
       if (me.queryCommandState("pasteplain") === 1) {

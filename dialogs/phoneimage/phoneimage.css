@@ -141,14 +141,21 @@
     padding-bottom:40px;
     border-bottom:1px dashed #d8d8d8;
 }
-.tabbody .qr-box .exam-qr{
+.tabbody .qr-box .exam-qr-box{
     position: relative;
     width:200px;
     height:200px;
     margin-right:25px;
     float:left;
+    z-index:1;
 }
-.tabbody .qr-box .exam-qr img.qr{
+.tabbody .qr-box .exam-qr-box .exam-qr{
+    position: relative;
+    width:200px;
+    height:200px;
+    z-index:1;
+}
+.tabbody .qr-box .exam-qr-box .exam-qr img.qr{
     position: relative;
     display: none;
     width:200px;
@@ -159,10 +166,71 @@
     -o-transition:opacity 100ms linear;
     transition:opacity 100ms linear;
 }
-.tabbody .qr-box .exam-qr .loading-wrapper{
+.tabbody .qr-box .exam-qr-box .exam-qr .loading-wrapper{
     padding-top: 90px !important;
 }
-.tabbody .qr-box .exam-qr img.qr.show{
+.tabbody .qr-box .exam-qr-box .exam-qr img.qr.show{
+    display: block;
+    opacity: 1;
+}
+.tabbody .qr-box .exam-qr-box .qr-anhao-txt{
+    position: absolute;
+    width:200px;
+    height:40px;
+    bottom:-35px;
+    left:0;
+    display: none;
+    line-height:40px;
+    text-align: center;
+    cursor: pointer;
+    color:#9b9b9b;
+    font-size:12px;
+    opacity:0;
+    z-index:1;
+    -webkit-transition:opacity 100ms linear;
+    -moz-transition:opacity 100ms linear;
+    -o-transition:opacity 100ms linear;
+    transition:opacity 100ms linear;
+}
+.tabbody .qr-box .exam-qr-box .qr-anhao-txt.show{
+    display: block;
+    opacity: 1;
+}
+.tabbody .qr-box .exam-qr-box .qr-anhao-box{
+    position: absolute;
+    width:200px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    height:82px;
+    padding:20px;
+    line-height:21px;
+    font-size:14px;
+    color:#666666;
+    text-align: left;
+    left:0;
+    bottom:-5px;
+    z-index: 2;
+    opacity:0;
+    display: none;
+    -webkit-transition:opacity 100ms linear;
+    -moz-transition:opacity 100ms linear;
+    -o-transition:opacity 100ms linear;
+    transition:opacity 100ms linear;
+}
+.tabbody .qr-box .exam-qr-box .qr-anhao-box .loading-wrapper{
+    padding-top: 20px !important;
+}
+.tabbody .qr-box .exam-qr-box .qr-anhao-box font{
+    color:#333;
+    font-size:16px;
+}
+.tabbody .qr-box .exam-qr-box .qr-anhao-box.show{
     display: block;
     opacity: 1;
 }

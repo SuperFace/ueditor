@@ -30,10 +30,8 @@
 
     /* 初始化onok事件 */
     function initButtons() {
-
         dialog.onok = function () {
             var list = uploadImage.getInsertList();
-
             if(list) {
                 editor.execCommand('insertimage', list);
             }
@@ -91,9 +89,12 @@
             this.loopHandler = null;
             this.examId = editor.getOpt('examId') || '';//当前考试id
             this.mobileUploadImgQrApi = editor.getOpt('mobileUploadImgQrApi') || '';//获取二维码接口
+            this.mobileQrAnhaoApi = editor.getOpt('mobileQrAnhaoApi') || '';//获取暗号
             this.mobileUploadedImaListApi = editor.getOpt('mobileUploadedImaListApi') || '';//获取手机上传图片列表接口
             this.qrSrc = '';
             this.qrUrl = '';
+            this.loadedAnhao = false;
+            this.baseURI = editor.document.baseURI;
             this.imageList = [];//从手机中上传的图片列表
             this.selectedImageList = [];//已经选择的图片列表
             this.initContainer();
@@ -107,7 +108,7 @@
         /* 获取考试+学生对应的二维码 */
         fetchQrcode: function () {
             var _this = this;
-            _this.$qrbox.find(".loading-wrapper").show();
+            _this.$qrbox.find(".exam-qr").find(".loading-wrapper").show();
             $.ajax({
                 url: this.mobileUploadImgQrApi + "?exam_id=" + this.examId,
                 type: "GET",
@@ -116,7 +117,8 @@
                     if(data.errcode == 0){
                         data = data.data;
                         _this.qrSrc = "qr_code" in data ? data.qr_code : '';
-                        _this.$qrbox.find(".loading-wrapper").hide();
+                        _this.$qrbox.find(".exam-qr").find(".loading-wrapper").hide();
+                        _this.$qrbox.find(".qr-anhao-txt").addClass("show");
                         if(_this.qrSrc){
                             _this.$qrbox.find(".qr").attr("src", _this.qrSrc).addClass("show");
                         }else{
@@ -129,6 +131,7 @@
                                 qrcode.makeCode(_this.qrUrl);
                             }
                         }
+                        _this.bindAnhao();
                     }
                 },
                 error: function(xhr, err, e){
@@ -136,10 +139,74 @@
                 }
             });
         },
+        bindAnhao: function(){
+            var _this = this;
+            _this.$wrap.off('click').on('click', function(e){
+                var target = e.target;
+                if($(target).hasClass("qr-anhao-box") || $(target).hasClass("anhao-num")){
+
+                }else{
+                    _this.$qrbox.find(".qr-anhao-box").removeClass("show");
+                }
+            });
+            _this.$qrbox.find(".qr-anhao-txt").off("click").on("click", function(e){
+                e = window.event || e;
+                e.stopPropagation();
+                e.cancelBubble = true;
+                if(_this.$qrbox.find(".qr-anhao-box").hasClass("show")){
+                    _this.$qrbox.find(".qr-anhao-box").removeClass("show");
+                }else{
+                    _this.$qrbox.find(".qr-anhao-box").addClass("show");
+                    if(_this.$qrbox.find(".qr-anhao-box").find(".loading-wrapper")){
+                        _this.$qrbox.find(".qr-anhao-box").find(".loading-wrapper").addClass("show");
+                    }
+                    if(!_this.loadedAnhao){
+                        $.ajax({
+                            url: _this.mobileQrAnhaoApi + "?exam_id=" + _this.examId,
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data){
+                                if(data.errcode == 0){
+                                    data = data.data;
+                                    _this.qrAnhao = "code" in data ? data.code : '';
+                                    if(_this.qrAnhao){
+                                        _this.loadedAnhao = true;
+                                        var platName = "雨课堂";
+                                        if(/examination\.xuetangx\.com/ig.test(hostName)){
+                                            platName =  "雨课堂";
+                                        }else if(/huanghe-exam\.yuketang\.cn/ig.test(hostName)){
+                                            platName =  "黄河雨课堂";
+                                        }else if(/changjiang-exam\.yuketang\.cn/ig.test(hostName)){
+                                            platName =  "长江雨课堂";
+                                        }else if(/changjang-exam\.yuketang\.cn/ig.test(hostName)){
+                                            platName =  "长江雨课堂";
+                                        }else if(/tsinghua-exam\.yuketang\.cn/ig.test(hostName)){
+                                            platName =  "荷塘雨课堂";
+                                        }
+                                        var _html = '在手机端' + platName + '公众号输入传图暗号：' + '<font class="anhao-num">'+_this.qrAnhao+'</font>';
+                                        _this.$qrbox.find(".qr-anhao-box").html(_html);
+                                    }else{
+                                        _this.$qrbox.find(".qr-anhao-box").removeClass("show");
+                                    }
+                                }
+                            },
+                            error: function(xhr, err, e){
+                                
+                            }
+                        });
+                    }
+                }
+                return false;
+            });
+        },
         clickRefreshImgList: function () {
             var _this = this;
             this.$wrap.find('.refrech-mobile-uploadlist').on("click", function(e){
+                e = window.event || e;
+                e.stopPropagation();
+                e.cancelBubble = true;
                 _this.fetchMobileUploadedImgListLoop();
+                return false;
             });
         },
         fetchMobileUploadedImgList: function (noloading) {
@@ -189,7 +256,13 @@
             _this.fetchMobileUploadedImgList();
             if(_this.loopHandler) clearInterval(_this.loopHandler);
             _this.loopHandler = setInterval(function(){
-                _this.fetchMobileUploadedImgList(true);
+                var _baseURI = editor.document.baseURI;
+                if(_this.baseURI != _baseURI){
+                    if(_this.loopHandler) clearInterval(_this.loopHandler);
+                    dialog.close();
+                }else{
+                    _this.fetchMobileUploadedImgList(true);
+                } 
             }, 3000);
         },
         changeInfo(){
@@ -266,18 +339,21 @@
                     _html += '</ul>';
                     _this.$wrap.find(".queueList-box").html(_html);
                 }
-                for(var ii=0; ii<_this.imageList.length;ii++){
-                    var _imgUrl = _this.imageList[ii];
-                    (function(url){
-                        getImgNaturalStyle(url, function(w, h){
-                            _this.$wrap.find("li.img-item[_url='"+url+"']").attr("_width", w).attr("_height", h);
-                        });
-                    })(_imgUrl);
-                }
+                // for(var ii=0; ii<_this.imageList.length;ii++){
+                //     var _imgUrl = _this.imageList[ii];
+                //     (function(url){
+                //         getImgNaturalStyle(url, function(w, h){
+                //             _this.$wrap.find("li.img-item[_url='"+url+"']").attr("_width", w).attr("_height", h);
+                //         });
+                //     })(_imgUrl);
+                // }
             }else{
                 _this.$wrap.find(".queueList-box").html('')
             }
             _this.$wrap.find(".img-item").off("click").on("click", function(e){
+                e = window.event || e;
+                e.stopPropagation();
+                e.cancelBubble = true;
                 if($(this).hasClass("selected")){
                     $(this).removeClass("selected");
                 }else{
@@ -288,11 +364,12 @@
                 for(var m=0; m<selectedDOM.length;m++){
                     _this.selectedImageList.push({
                         url: $(selectedDOM[m]).attr("_url"),
-                        width: $(selectedDOM[m]).attr("_width"),
-                        height: $(selectedDOM[m]).attr("_height")
+                        width: $(selectedDOM[m]).attr("_width") || '',
+                        height: $(selectedDOM[m]).attr("_height") || ''
                     });
                 }
                 _this.changeInfo();
+                return false;
             });
         },
         getToken: function () {
@@ -314,7 +391,7 @@
                 list.push({
                     src: data.url,
                     _src: data.url,
-                    width: (data['width'] >= $(editor.container).width()-16) ? '80%' : data['width'] || '',
+                    width: (data['width'] && data['width'] >= $(editor.container).width()-16) ? '80%' : data['width'] || '',
                     height: 'auto'
                 });
             }

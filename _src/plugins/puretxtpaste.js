@@ -11,7 +11,7 @@ UE.plugins["pasteplain"] = function() {
     filterTxtRules: (function() {
       function transP(node) {
         node.tagName = "p";
-        node.setStyle();
+        //node.setStyle();//临时去掉
       }
       function removeNode(node) {
         node.parentNode.removeChild(node, true);

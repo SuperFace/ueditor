@@ -290,10 +290,12 @@ UE.commands["insertimage"] = {
 
         if(!ci.width){
           (function(url, id){
-            getImgNaturalStyle(url, function(w, h){
-              me.document.getElementById(id).setAttributes("width", (w >= +(me.container.style.width.replace("px", ""))-16) ? '80%' : w || '');
-              me.document.getElementById(id).setAttributes("height", "auto");
-            });
+            setTimeout(function(){
+              getImgNaturalStyle(url, function(w, h){
+                me.document.getElementById(id).setAttribute("width", (w >= +(me.container.style.width.replace("px", ""))-16) ? '80%' : w || '');
+                me.document.getElementById(id).setAttribute("height", "auto");
+              });
+            }, 200);
           })(ci.src, _id);
         }
       } else {
@@ -322,10 +324,12 @@ UE.commands["insertimage"] = {
 
           if(!ci.width){
             (function(url, id){
-              getImgNaturalStyle(url, function(w, h){
-                me.document.getElementById(id).setAttribute("width", (w >= +(me.container.style.width.replace("px", ""))-16) ? '80%' : w || '');
-                me.document.getElementById(id).setAttribute("height", "auto");
-              });
+              setTimeout(function(){
+                getImgNaturalStyle(url, function(w, h){
+                  me.document.getElementById(id).setAttribute("width", (w >= +(me.container.style.width.replace("px", ""))-16) ? '80%' : w || '');
+                  me.document.getElementById(id).setAttribute("height", "auto");
+                });
+              }, 200);
             })(ci.src, _id);
           }
         }
