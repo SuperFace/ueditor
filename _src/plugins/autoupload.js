@@ -52,12 +52,8 @@ UE.plugin.register("autoupload", function() {
 
     if (filetype == "image") {
       loadingHtml =
-        '<img class="loadingclass" id="' +
-        loadingId +
-        '" src="' +
-        me.options.themePath +
-        me.options.theme +
-        '/images/spacer.gif">';
+        //'<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme + '/images/spacer.gif">';
+        '<img class="" src="" id="' + loadingId + '">';
       successHandler = function(data) {
         var link = urlPrefix + data.url;
         var loader = me.document.getElementById(loadingId);
@@ -81,14 +77,8 @@ UE.plugin.register("autoupload", function() {
       };
     } else {
       loadingHtml =
-        "<p>" +
-        '<img class="loadingclass" id="' +
-        loadingId +
-        '" src="' +
-        me.options.themePath +
-        me.options.theme +
-        '/images/spacer.gif">' +
-        "</p>";
+       //"<p>" + '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme + '/images/spacer.gif">' + "</p>";
+       "<p>" + '<img class="" src="" id="' + loadingId + '">' + "</p>";
       successHandler = function(data) {
         var link = urlPrefix + data.url,
           loader = me.document.getElementById(loadingId);
@@ -141,16 +131,15 @@ UE.plugin.register("autoupload", function() {
     xhr.open("post", url, true);
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.addEventListener("load", function(e) {
-      //successHandler();
       try {
         var json = new Function("return " + utils.trim(e.target.response))();
         if (json.state == "SUCCESS" && json.url) {
-          successHandler(json);
+          //successHandler(json);
         } else {
-          errorHandler(json.state);
+          //errorHandler(json.state);
         }
       } catch (er) {
-        errorHandler(me.getLang("autoupload.loadError"));
+        //errorHandler(me.getLang("autoupload.loadError"));
       }
     });
     xhr.send(fd);

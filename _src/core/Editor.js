@@ -793,6 +793,8 @@
       var root = UE.htmlparser(me.body.innerHTML, ignoreBlank);
       me.filterOutputRule(root);
       me.fireEvent("aftergetcontent", cmd, root);
+      //var htmlStr = root.toHtml(formatter).replace(/\\\$/ig, "$").replace(/\$/ig, "\\\$");
+      //var htmlStr = root.toHtml(formatter).replace(/\\\$/ig, "<span>$</span>").replace(/\<span\>\$<\/span\>/ig, "$").replace(/\$/ig, "<span>$</span>");
       return root.toHtml(formatter);
     },
 

@@ -94,7 +94,7 @@
             this.qrSrc = '';
             this.qrUrl = '';
             this.loadedAnhao = false;
-            this.baseURI = editor.document.baseURI;
+            this.baseURI = window.parent.location.href;
             this.imageList = [];//从手机中上传的图片列表
             this.selectedImageList = [];//已经选择的图片列表
             this.initContainer();
@@ -256,7 +256,7 @@
             _this.fetchMobileUploadedImgList();
             if(_this.loopHandler) clearInterval(_this.loopHandler);
             _this.loopHandler = setInterval(function(){
-                var _baseURI = editor.document.baseURI;
+                var _baseURI = window.parent.location.href;
                 if(_this.baseURI != _baseURI){
                     if(_this.loopHandler) clearInterval(_this.loopHandler);
                     dialog.close();
