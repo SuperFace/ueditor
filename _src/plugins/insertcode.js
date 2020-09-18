@@ -9,7 +9,7 @@ UE.plugins["insertcode"] = function() {
   me.ready(function() {
     utils.cssRule(
       "pre",
-      "pre{margin:.5em 0;padding:.4em .6em;border-radius:8px;background:#f8f8f8;}",
+      "pre{margin:.5em 0;padding:.4em .6em;border-radius:8px;background:#f8f8f8;line-height:1.4em;}",
       me.document
     );
   });

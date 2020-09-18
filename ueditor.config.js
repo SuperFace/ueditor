@@ -203,7 +203,7 @@
     //,saveInterval: 500
 
     //启用拖放上传
-    //,enableDragUpload: true
+    ,enableDragUpload: true
     //启用粘贴上传
     ,enablePasteUpload: true
 

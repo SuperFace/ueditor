@@ -134,12 +134,12 @@ UE.plugin.register("autoupload", function() {
       try {
         var json = new Function("return " + utils.trim(e.target.response))();
         if (json.state == "SUCCESS" && json.url) {
-          //successHandler(json);
+          successHandler(json);
         } else {
-          //errorHandler(json.state);
+          errorHandler(json.state);
         }
       } catch (er) {
-        //errorHandler(me.getLang("autoupload.loadError"));
+        errorHandler(me.getLang("autoupload.loadError"));
       }
     });
     xhr.send(fd);

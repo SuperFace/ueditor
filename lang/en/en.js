@@ -503,7 +503,7 @@ UE.I18N['en'] = {
             'lang_input_fileStatus':' No file uploaded!',
             'startUpload':{'style':"background:url(upload.png) no-repeat;"},
 
-            'lang_upload_size':"Music" Size",
+            'lang_upload_size':"Music Size",
             'lang_upload_width':"Width",
             'lang_upload_height':"Height",
             'lang_upload_alignment':"Alignment",

@@ -665,17 +665,17 @@ if (XRegExp) {
 //
 // Begin anonymous function. This is used to contain local scope variables without polutting global scope.
 //
-if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function() {
+if (typeof(SyntaxHighlighter) == 'undefined') 
+var SyntaxHighlighter = function() {
 
-// CommonJS
-    if (typeof(require) != 'undefined' && typeof(XRegExp) == 'undefined')
-    {
-        XRegExp = require('XRegExp').XRegExp;
-    }
+    // CommonJS
+    // if (typeof(require) != 'undefined' && typeof(XRegExp) == 'undefined') {
+    //     XRegExp = require('XRegExp').XRegExp;
+    // }
 
-// Shortcut object which will be assigned to the SyntaxHighlighter variable.
-// This is a shorthand for local reference in order to avoid long namespace
-// references to SyntaxHighlighter.whatever...
+    // Shortcut object which will be assigned to the SyntaxHighlighter variable.
+    // This is a shorthand for local reference in order to avoid long namespace
+    // references to SyntaxHighlighter.whatever...
     var sh = {
         defaults : {
             /** Additional CSS class names to be added to highlighter elements. */
@@ -709,7 +709,7 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
             'gutter' : true,
 
             /** Enables or disables toolbar. */
-            'toolbar' : true,
+            'toolbar' : false,
 
             /** Enables quick code copy and paste from double click. */
             'quick-code' : true,
@@ -1807,6 +1807,8 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
         textarea.appendChild(document.createTextNode(code));
         container.appendChild(textarea);
 
+        //readOnly
+        textarea.readOnly = true;
         // preselect all text
         textarea.focus();
         textarea.select();
@@ -2209,7 +2211,9 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
                 classes = [ 'syntaxhighlighter' ],
                 tabSize,
                 matches,
-                lineNumbers
+                lineNumbers,
+                className,
+                gutter
                 ;
 
             // process light mode
@@ -2281,7 +2285,6 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
                     + '</table>'
                     + '</div>'
             ;
-
             return html;
         },
 
@@ -2377,16 +2380,12 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
     return sh;
 }(); // end of anonymous function
 
-// CommonJS
-typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter : null;
-
-;(function()
-{
+// 'actionscript3', 'as3'
+;(function() {
     // CommonJS
-    SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+    //SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-    function Brush()
-    {
+    function Brush() {
         // Created by Peter Atoria @ http://iAtoria.com
 
         var inits 	 =  'class interface function package';
@@ -2421,16 +2420,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
     SyntaxHighlighter.brushes.AS3 = Brush;
 
     // CommonJS
-    typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 
-;(function()
-{
+// 'applescript'
+;(function() {
     // CommonJS
-    SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+    //SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-    function Brush()
-    {
+    function Brush() {
         // AppleScript brush by David Chambers
         // http://davidchambersdesign.com/
         var keywords   = 'after before beginning continue copy each end every from return get global in local named of set some that the then times to where whose with without';
@@ -2481,15 +2479,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
     SyntaxHighlighter.brushes.AppleScript = Brush;
 
     // CommonJS
-    typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'bash', 'shell', 'sh'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		var keywords =	'if fi then elif else for do done until while break continue case esac function return in eq ne ge le';
 		var commands =  'alias apropos awk basename bash bc bg builtin bzip2 cal cat cd cfdisk chgrp chmod chown chroot' +
 						'cksum clear cmp comm command cp cron crontab csplit cut date dc dd ddrescue declare df ' +
@@ -2524,15 +2522,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Bash = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'coldfusion','cf'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Jen
 		// http://www.jensbits.com/2009/05/14/coldfusion-brush-for-syntaxhighlighter-plus
 	
@@ -2608,15 +2606,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.ColdFusion = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'cpp', 'c'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Copyright 2006 Shin, YoungJin
 	
 		var datatypes =	'ATOM BOOL BOOLEAN BYTE CHAR COLORREF DWORD DWORDLONG DWORD_PTR ' +
@@ -2689,15 +2687,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Cpp = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'c#', 'c-sharp', 'csharp'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		var keywords =	'abstract as base bool break byte case catch char checked class const ' +
 						'continue decimal default delegate do double else enum event explicit volatile ' +
 						'extern false finally fixed float for foreach get goto if implicit in int ' +
@@ -2738,15 +2736,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.CSharp = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'css'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		function getKeywordsCSS(str)
 		{
 			return '\\b([a-z_]|)' + str.replace(/ /g, '(?=:)\\b|\\b([a-z_\\*]|\\*|)') + '(?=:)\\b';
@@ -2813,15 +2811,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.CSS = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'delphi', 'pascal', 'pas'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		var keywords =	'abs addr and ansichar ansistring array as asm begin boolean byte cardinal ' +
 						'case char class comp const constructor currency destructor div do double ' +
 						'downto else end except exports extended false file finalization finally ' +
@@ -2852,15 +2850,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Delphi = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+    //typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'diff', 'patch'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		this.regexList = [
 			{ regex: /^\+\+\+ .*$/gm,	css: 'color2' },	// new file
 			{ regex: /^\-\-\- .*$/gm,	css: 'color2' },	// old file
@@ -2877,15 +2875,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Diff = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'erl', 'erlang'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Jean-Lou Dupont
 		// http://jldupont.blogspot.com/2009/06/erlang-syntax-highlighter.html  
 
@@ -2913,15 +2911,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Erland = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'groovy'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Andres Almiray
 		// http://jroller.com/aalmiray/entry/nice_source_code_syntax_highlighter
 
@@ -2964,15 +2962,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Groovy = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'java'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		var keywords =	'abstract assert boolean break byte case catch char class const ' +
 						'continue default do double else enum extends ' +
 						'false final finally float for goto if implements import ' +
@@ -3005,15 +3003,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Java = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'jfx', 'javafx'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Patrick Webster
 		// http://patrickwebster.blogspot.com/2009/04/javafx-brush-for-syntaxhighlighter.html
 		var datatypes =	'Boolean Byte Character Double Duration '
@@ -3047,15 +3045,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.JavaFX = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'js', 'jscript', 'javascript'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		var keywords =	'break case catch continue ' +
 						'default delete do else false  ' +
 						'for function if in instanceof ' +
@@ -3083,15 +3081,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.JScript = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'perl', 'Perl', 'pl'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by David Simmons-Duffin and Marty Kube
 	
 		var funcs = 
@@ -3160,15 +3158,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Perl = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'php'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		var funcs	=	'abs acos acosh addcslashes addslashes ' +
 						'array_change_key_case array_chunk array_combine array_count_values array_diff '+
 						'array_diff_assoc array_diff_key array_diff_uassoc array_diff_ukey array_fill '+
@@ -3232,12 +3230,13 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Php = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
+
+// 'text', 'plain'
+;(function() {
 	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
 	function Brush()
 	{
@@ -3249,15 +3248,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Plain = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'powershell', 'ps', 'posh'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Joel 'Jaykul' Bennett, http://PoshCode.org | http://HuddledMasses.org
 		var keywords =	'while validateset validaterange validatepattern validatelength validatecount ' +
 						'until trap switch return ref process param parameter in if global: '+
@@ -3308,15 +3307,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.PowerShell = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'py', 'python'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Gheorghe Milas and Ahmad Sherif
 	
 		var keywords =  'and assert break class continue def del elif else ' +
@@ -3356,15 +3355,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Python = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'ruby', 'rails', 'ror', 'rb'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Erik Peterson.
 	
 		var keywords =	'alias and BEGIN begin break case class def define_method defined do each else elsif ' +
@@ -3395,15 +3394,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Ruby = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'sass', 'scss'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		function getKeywordsCSS(str)
 		{
 			return '\\b([a-z_]|)' + str.replace(/ /g, '(?=:)\\b|\\b([a-z_\\*]|\\*|)') + '(?=:)\\b';
@@ -3473,15 +3472,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Sass = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'scala'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		// Contributed by Yegor Jbanov and David Bernard.
 	
 		var keywords =	'val sealed case def true trait implicit forSome import match object null finally super ' +
@@ -3508,15 +3507,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Scala = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+// 'sql'
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
 		var funcs	=	'abs avg case cast coalesce convert count current_timestamp ' +
 						'current_user day isnull left lower month nullif replace right ' +
 						'session_user space substring sum system_user upper user year';
@@ -3557,16 +3556,15 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Sql = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 
-;(function()
-{
+// 'vb', 'vbnet'
+;(function() {
 	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
+	function Brush() {
 		var keywords =	'AddHandler AddressOf AndAlso Alias And Ansi As Assembly Auto ' +
 						'Boolean ByRef Byte ByVal Call Case Catch CBool CByte CChar CDate ' +
 						'CDec CDbl Char CInt Class CLng CObj Const CShort CSng CStr CType ' +
@@ -3598,25 +3596,22 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Vb = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
-;(function()
-{
-	// CommonJS
-	SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
 
-	function Brush()
-	{
-		function process(match, regexInfo)
-		{
+;(function() {
+	// CommonJS
+	//SyntaxHighlighter = SyntaxHighlighter || (typeof require !== 'undefined'? require('shCore').SyntaxHighlighter : null);
+
+	function Brush() {
+		function process(match, regexInfo) {
 			var constructor = SyntaxHighlighter.Match,
 				code = match[0],
 				tag = new XRegExp('(&lt;|<)[\\s\\/\\?]*(?<name>[:\\w-\\.]+)', 'xg').exec(code),
 				result = []
 				;
 		
-			if (match.attributes != null) 
-			{
+			if (match.attributes != null) {
 				var attributes,
 					regex = new XRegExp('(?<name> [\\w:\\-\\.]+)' +
 										'\\s*=\\s*' +
@@ -3651,5 +3646,23 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 	SyntaxHighlighter.brushes.Xml = Brush;
 
 	// CommonJS
-	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+	//typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
+
+//ES6
+//export default SyntaxHighlighter;
+
+//UMD
+!function(root,t){
+    if("object"==typeof exports && "object"==typeof module){
+        module.exports=t();
+    }else if("function"==typeof define && define.amd){
+        define([],t);
+    }else if("object"==typeof exports){
+        exports.SyntaxHighlighter=t();
+    }else{
+        root.SyntaxHighlighter=t();
+    }
+}(this, function(){
+    return SyntaxHighlighter;
+});

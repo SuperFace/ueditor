@@ -19,7 +19,7 @@
         UE.getEditor('myEditor');
     </pre>
 </div>
-
+<div id="text-content" style="position: relative;width:80%;height:200px;border:1px solid #eee;padding:20px;margin:20px;"></div>
 <!--style给定宽度可以影响编辑器的最终宽度-->
 <script type="text/plain" id="myEditor" style="width:500px">
     <h3>实例化编辑器</h3>
@@ -29,8 +29,18 @@
 </script>
 <script type="text/javascript">
     //为了在编辑器之外能展示高亮代码
-    SyntaxHighlighter.highlight();
-   UE.getEditor('myEditor');
+    //SyntaxHighlighter.highlight();
+    var editor = UE.getEditor('myEditor');
+    var ccHandler= null;
+    editor.on('blur', (e) => {
+        if(ccHandler) clearTimeout(ccHandler);
+        ccHandler = setTimeout(()=>{
+            var text = editor.getContent();
+            //text = text.replace(/\<span\>\$<\/span\>/ig, "$").replace(/\$/ig, "<span>$</span>");
+            document.getElementById("text-content").innerHTML = text;  
+            SyntaxHighlighter.highlight();
+        }, 200);
+    });
 </script>
 
 </body>
