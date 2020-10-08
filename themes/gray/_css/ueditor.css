@@ -7,7 +7,16 @@
     url('../fonts/font_677298_ptvpoj01kpi.woff') format('woff'),
     url('../fonts/font_677298_ptvpoj01kpi.ttf') format('truetype'),
     url('../fonts/font_677298_ptvpoj01kpi.svg#iconfont') format('svg');
-  }
+}
+/* @font-face {
+    font-family: 'uiconfont';
+    src: url('https://static-cdn.xuetangx.com/xtassets/ueditor/fonts/font_677298_ptvpoj01kpi.eot');
+    src: url('https://static-cdn.xuetangx.com/xtassets/ueditor/fonts/font_677298_ptvpoj01kpi.eot?#iefix') format('embedded-opentype'),
+    url('https://static-cdn.xuetangx.com/xtassets/ueditor/fonts/font_677298_ptvpoj01kpi.woff2') format('woff2'),
+    url('https://static-cdn.xuetangx.com/xtassets/ueditor/fonts/font_677298_ptvpoj01kpi.woff') format('woff'),
+    url('https://static-cdn.xuetangx.com/xtassets/ueditor/fonts/font_677298_ptvpoj01kpi.ttf') format('truetype'),
+    url('https://static-cdn.xuetangx.com/xtassets/ueditor/fonts/font_677298_ptvpoj01kpi.svg#iconfont') format('svg');
+} */
 
 
 [class^="icon-for"]:before, 
