@@ -416,20 +416,40 @@ div.edui-box {
 	content: "\e6c5";
 }
 /**图片默认**/
-.edui-gray .edui-for-imagenone .edui-icon:before {
-	content: "\e623";
+.edui-gray .edui-toolbar .edui-for-imagenone .edui-icon{
+    width: 20px;
+    height: 20px;
+    top:1px;
+    background-image: url(../images/imagenone.svg) !important;
+    background-size: 20px 20px;
+    background-position: center;
 }
 /**图片左浮动**/
-.edui-gray .edui-for-imageleft .edui-icon:before {
-	content: "\e620";
+.edui-gray .edui-toolbar .edui-for-imageleft .edui-icon{
+    width: 20px;
+    height: 20px;
+    top:1px;
+    background-image: url(../images/imageleft.svg) !important;
+    background-size: 20px 20px;
+    background-position: center;
 }
 /**图片右浮动**/
-.edui-gray .edui-for-imageright .edui-icon:before {
-	content: "\e622";
+.edui-gray .edui-toolbar .edui-for-imageright .edui-icon{
+    width: 20px;
+    height: 20px;
+    top:1px;
+    background-image: url(../images/imageright.svg) !important;
+    background-size: 20px 20px;
+    background-position: center;
 }
 /**图片居中**/
-.edui-gray .edui-for-imagecenter .edui-icon:before {
-	content: "\e61f";
+.edui-gray .edui-toolbar .edui-for-imagecenter .edui-icon{
+    width: 20px;
+    height: 20px;
+    top:1px;
+    background-image: url(../images/imagecenter.svg) !important;
+    background-size: 20px 20px;
+    background-position: center;
 }
 
 /**单图上传**/
@@ -599,8 +619,13 @@ div.edui-box {
 	content: "\e650";
 }
 /**预览**/
-.edui-gray .edui-for-preview .edui-icon:before {
-	content: "\e60b";
+.edui-gray .edui-toolbar .edui-for-preview .edui-icon{
+    width:20px;
+    height:20px;
+    top:1px;
+    background: url(../images/preview.svg) center center no-repeat;
+    background-size: 20px 20px;
+    background-position: center;
 }
 
 /**查询替换**/

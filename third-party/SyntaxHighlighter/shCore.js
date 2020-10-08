@@ -1812,9 +1812,16 @@ var SyntaxHighlighter = function() {
         // preselect all text
         textarea.focus();
         textarea.select();
-
+        
         // set up handler for lost focus
         attachEvent(textarea, 'blur', function(e)
+        {
+            textarea.parentNode.removeChild(textarea);
+            removeClass(highlighterDiv, 'source');
+        });
+
+        //unselect trigger blur
+        attachEvent(textarea, 'click', function(e)
         {
             textarea.parentNode.removeChild(textarea);
             removeClass(highlighterDiv, 'source');
