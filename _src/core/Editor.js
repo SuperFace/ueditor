@@ -795,7 +795,11 @@
       me.fireEvent("aftergetcontent", cmd, root);
       //var htmlStr = root.toHtml(formatter).replace(/\\\$/ig, "$").replace(/\$/ig, "\\\$");
       //var htmlStr = root.toHtml(formatter).replace(/\\\$/ig, "<span>$</span>").replace(/\<span\>\$<\/span\>/ig, "$").replace(/\$/ig, "<span>$</span>");
-      return root.toHtml(formatter);
+      var htmlStr = root.toHtml(formatter);
+      if(htmlStr.indexOf("custom_ueditor_cn_body") == -1){
+        htmlStr = '<div class="custom_ueditor_cn_body">' + htmlStr + '</div>';
+      }
+      return htmlStr;
     },
 
     /**

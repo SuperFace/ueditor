@@ -89,7 +89,7 @@ UE.plugins["list"] = function() {
             p +
             "{list-style:none;}ul.custom_" +
             p +
-            " li{background-position:0 3px;background-repeat:no-repeat}"
+            " li{background-position:0 5px;background-repeat:no-repeat}"
         );
       } else {
         for (var i = 0; i < 99; i++) {
